@@ -42,10 +42,14 @@ public class Ball implements Model {
 
     public void tick() {
         if(velocity > 0) {
-            dx = Math.cos(alpha) * velocity;
-            dy = Math.sin(alpha) * velocity;
-            calculateCollision(dx, dy);
-            double dV = 0.5 * 9.81 * (velocity/velocity+0.5)*0.01;
+            this.dx = Math.cos(alpha) * velocity;
+            this.dy = Math.sin(alpha) * velocity;
+            if(calculateCollision(dx, dy)) {
+                this.dx = Math.cos(alpha) * velocity;
+                this.dy = Math.sin(alpha) * velocity;
+            }
+
+            double dV = 0.2 * 9.81 * (velocity/velocity+0.2)*0.01;
 //            System.out.println("Delta v " + dV);
 //            System.out.println(dx + " " + dy + " || " + velocity + " " + alpha);
 
@@ -58,31 +62,47 @@ public class Ball implements Model {
         }
     }
 
-    private void calculateCollision(double dx, double dy) {
-        if(Math.signum(dx) < 0 && (x+=dx) < 30) {
-            alpha = Math.PI - alpha;
+    private boolean calculateCollision(double dx, double dy) {
+        boolean recalculate = false;
+        if(Math.signum(dx) < 0 && (x+dx) < 20) {
              // Making sure that the ball hits the edge
-            velocity = 0;
-            this.dx = 0;
-            this.dy = 0;
-        } else if(Math.signum(dx) > 0 && (x+=dx) > TableView.WIDTH-30) {
-            alpha = Math.PI - alpha;
-            velocity = 0;
-            this.dx = 0;
-            this.dy = 0;
+            if(x <= 20) {
+                alpha = Math.PI - alpha;
+                recalculate = true;
+            } else {
+                this.dx = 20-x;
+                //this.dy = dy-(dx-this.dx);
+            }
+        } else if(Math.signum(dx) > 0 && (x+dx) > TableView.WIDTH-40) {
+            if(x >= TableView.WIDTH-40) {
+                alpha = Math.PI - alpha;
+                recalculate = true;
+            } else {
+                this.dx = TableView.WIDTH-40 - x;
+                //this.dy = dy-(dx-this.dx);
+            }
         }
-        if(Math.signum(dy) < 0 && (y+=dy) < 30) {
-            alpha = Math.PI + (Math.PI - alpha);
-            velocity = 0;
-            this.dx = 0;
-            this.dy = 0;
+
+        if(Math.signum(dy) < 0 && (y+dy) < 20) {
+            if(y <= 20) {
+                alpha = Math.PI + (Math.PI - alpha);
+                recalculate = true;
+            } else {
+                this.dy = 20-y;
+                //this.dx = dx-(dy-this.dx);
+            }
         }
-        else if(Math.signum(dy) > 0 && (y+=dy) > TableView.HEIGHT - 30) {
-            alpha = Math.PI + (Math.PI - alpha);
-            velocity = 0;
-            this.dx = 0;
-            this.dy = 0;
+        else if(Math.signum(dy) > 0 && (y+dy) > TableView.HEIGHT - 40) {
+            if(y >= TableView.HEIGHT-40) {
+                alpha = Math.PI + (Math.PI - alpha);
+                recalculate = true;
+            } else {
+                this.dy = TableView.HEIGHT-40 - y;
+                //this.dx = dx-(dy-this.dy);
+            }
         }
+
+        return recalculate;
     }
 
     public int getRadius() {

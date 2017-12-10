@@ -53,7 +53,9 @@ public class FXMLPoolController {
                 @Override
                 public void handle(MouseEvent event) {
                     try {
-                        mouseMoveHandler(event);
+                        if(!ballsMoving()) {
+                            mouseMoveHandler(event);
+                        }
                     } catch (UnknownStateException ex) {
 
                     }
@@ -66,7 +68,9 @@ public class FXMLPoolController {
                 @Override
                 public void handle(MouseEvent event) {
                     try {
-                        mouseClickHandler(event);
+                        if(!ballsMoving()) {
+                            mouseClickHandler(event);
+                        }
                     } catch (UnknownStateException ex) {
 
                     }
@@ -189,6 +193,7 @@ public class FXMLPoolController {
                     }
                 };
                 Thread t = new Thread(timerTask);
+                t.setDaemon(true);
                 t.start();
                 break;
             case MAIN_MENU:
@@ -215,6 +220,8 @@ public class FXMLPoolController {
     }
 
     public boolean ballsMoving() {
+        if(navigation != Navigation.IN_GAME) { return false; }
+
         boolean movement = false;
         for(Ball ball : tableModel.getBalls()) {
             if(ball.getVelocity() != 0) {
