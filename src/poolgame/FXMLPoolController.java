@@ -176,6 +176,9 @@ public class FXMLPoolController {
                                     alpha -= Math.PI;
                                 }
                                 ball.setAlpha(alpha);
+                            } else {
+                                ball.setAlpha(90 + Math.random());
+                                ball.setVelocity(10);
                             }
                         }
                         while(ballsMoving()) {
