@@ -12,10 +12,12 @@ public class Cue implements Model  {
     private double cueBallX;
     private double cueBallY;
 
-    private double length = 100;
-    private double width = 5;
+    private double length = 350;
+    private double width = 10;
 
     private boolean isVisible;
+
+    private String imageLocation = "../img/cue.img";
 
     public Cue() {
         x = y = 0;
@@ -56,4 +58,8 @@ public class Cue implements Model  {
         this.isVisible = isVis;
     }
     public boolean isVisible() { return isVisible; }
+
+    public String getImageLocation() {
+        return imageLocation;
+    }
 }

@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 import poolgame.helpers.Model;
 import poolgame.views.TableView;
 
+import javax.swing.table.TableModel;
+
 public class Ball implements Model {
 
     private int radius = 10;
@@ -73,12 +75,12 @@ public class Ball implements Model {
                 this.dx = 30-x;
                 //this.dy = dy-(dx-this.dx);
             }
-        } else if(Math.signum(dx) > 0 && (x+dx) > TableView.WIDTH-30) {
-            if(x >= TableView.WIDTH-30) {
+        } else if(Math.signum(dx) > 0 && (x+dx) > Table.WIDTH-30) {
+            if(x >= Table.WIDTH-30) {
                 alpha = Math.PI - alpha;
                 recalculate = true;
             } else {
-                this.dx = TableView.WIDTH-30 - x;
+                this.dx = Table.WIDTH-30 - x;
                 //this.dy = dy-(dx-this.dx);
             }
         }
@@ -92,12 +94,12 @@ public class Ball implements Model {
                 //this.dx = dx-(dy-this.dx);
             }
         }
-        else if(Math.signum(dy) > 0 && (y+dy) > TableView.HEIGHT - 30) {
-            if(y >= TableView.HEIGHT-30) {
+        else if(Math.signum(dy) > 0 && (y+dy) > Table.HEIGHT - 30) {
+            if(y >= Table.HEIGHT-30) {
                 alpha = Math.PI + (Math.PI - alpha);
                 recalculate = true;
             } else {
-                this.dy = TableView.HEIGHT-30 - y;
+                this.dy = Table.HEIGHT-30 - y;
                 //this.dx = dx-(dy-this.dy);
             }
         }

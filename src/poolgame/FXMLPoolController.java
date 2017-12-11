@@ -1,13 +1,11 @@
 package poolgame;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -56,7 +54,6 @@ public class FXMLPoolController {
 
     private void initialize() throws UnknownStateException {
         if(table.getOnMouseMoved() == null) {
-            // Volgend event gevonden op https://stackoverflow.com/questions/16635514/how-to-get-location-of-mouse-in-javafx
             table.setOnMouseMoved(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
