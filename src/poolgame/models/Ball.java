@@ -64,40 +64,40 @@ public class Ball implements Model {
 
     private boolean calculateCollision(double dx, double dy) {
         boolean recalculate = false;
-        if(Math.signum(dx) < 0 && (x+dx) < 20) {
+        if(Math.signum(dx) < 0 && (x+dx) < 30) {
              // Making sure that the ball hits the edge
-            if(x <= 20) {
+            if(x <= 30) {
                 alpha = Math.PI - alpha;
                 recalculate = true;
             } else {
-                this.dx = 20-x;
+                this.dx = 30-x;
                 //this.dy = dy-(dx-this.dx);
             }
-        } else if(Math.signum(dx) > 0 && (x+dx) > TableView.WIDTH-40) {
-            if(x >= TableView.WIDTH-40) {
+        } else if(Math.signum(dx) > 0 && (x+dx) > TableView.WIDTH-30) {
+            if(x >= TableView.WIDTH-30) {
                 alpha = Math.PI - alpha;
                 recalculate = true;
             } else {
-                this.dx = TableView.WIDTH-40 - x;
+                this.dx = TableView.WIDTH-30 - x;
                 //this.dy = dy-(dx-this.dx);
             }
         }
 
-        if(Math.signum(dy) < 0 && (y+dy) < 20) {
-            if(y <= 20) {
+        if(Math.signum(dy) < 0 && (y+dy) < 30) {
+            if(y <= 30) {
                 alpha = Math.PI + (Math.PI - alpha);
                 recalculate = true;
             } else {
-                this.dy = 20-y;
+                this.dy = 30-y;
                 //this.dx = dx-(dy-this.dx);
             }
         }
-        else if(Math.signum(dy) > 0 && (y+dy) > TableView.HEIGHT - 40) {
-            if(y >= TableView.HEIGHT-40) {
+        else if(Math.signum(dy) > 0 && (y+dy) > TableView.HEIGHT - 30) {
+            if(y >= TableView.HEIGHT-30) {
                 alpha = Math.PI + (Math.PI - alpha);
                 recalculate = true;
             } else {
-                this.dy = TableView.HEIGHT-40 - y;
+                this.dy = TableView.HEIGHT-30 - y;
                 //this.dx = dx-(dy-this.dy);
             }
         }

@@ -13,7 +13,7 @@ public class BallView extends Group implements View {
 
     public BallView(Ball ball) {
         this.ball = ball;
-        ballView = new Circle(10, 10, ball.getRadius());
+        ballView = new Circle(0, 0, ball.getRadius());
         ballView.setFill(ball.getColor());
 
         getChildren().add(ballView);

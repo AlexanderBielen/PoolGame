@@ -18,22 +18,23 @@ public class TableView  extends Region implements View {
     public TableView(Table tableModel) {
         this.setFocusTraversable(true);
 
-        Rectangle table = new Rectangle(0,0, WIDTH, HEIGHT);
-        table.setFill(new Color(0, 0, 0, 1));
-
-        Rectangle clothEdge = new Rectangle(10,10,WIDTH-20,HEIGHT-20);
-        clothEdge.setFill(new Color(0, 0.1765, 0.4157, 1));
-
-        Rectangle clothField = new Rectangle(20,20,WIDTH-40,HEIGHT-40);
-        clothField.setFill(new Color(0, 0.2588, 0.6, 1));
+//        Rectangle table = new Rectangle(0,0, WIDTH, HEIGHT);
+//        table.setFill(new Color(0, 0, 0, 1));
+//
+//        Rectangle clothEdge = new Rectangle(10,10,WIDTH-20,HEIGHT-20);
+//        clothEdge.setFill(new Color(0, 0.1765, 0.4157, 1));
+//
+//        Rectangle clothField = new Rectangle(20,20,WIDTH-40,HEIGHT-40);
+//        clothField.setFill(new Color(0, 0.2588, 0.6, 1));
+//
+//        getChildren().add(table);
+//        getChildren().add(clothEdge);
+//        getChildren().add(clothField);
 
         ballViews = new ArrayList<>();
         for(Ball ball : tableModel.getBalls()) {
             ballViews.add(new BallView(ball));
         }
-        getChildren().add(table);
-        getChildren().add(clothEdge);
-        getChildren().add(clothField);
 
         getChildren().addAll(ballViews);
 

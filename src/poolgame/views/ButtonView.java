@@ -16,7 +16,8 @@ public class ButtonView extends Group implements View {
         this.menuButton = menuButton;
         buttonView = new Rectangle(0,0, menuButton.getWidth(), menuButton.getHeight());
         buttonView.setFill(Color.YELLOW);
-        buttonText = new Text(40,20, menuButton.getText());
+        buttonText = new Text(50,30, menuButton.getText());
+
 
         buttonText.translateXProperty().bind(buttonView.translateXProperty());
         buttonText.translateYProperty().bind(buttonView.translateYProperty());

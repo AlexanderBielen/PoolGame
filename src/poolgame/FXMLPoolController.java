@@ -138,8 +138,21 @@ public class FXMLPoolController {
     private void mouseMoveHandler(MouseEvent event) throws UnknownStateException {
         switch (navigation) {
             case IN_GAME:
-                cueModel.setXY(event.getX(), event.getY());
-                cueView.update();
+                for(Ball ball : tableModel.getBalls()) {
+                    if(ball.isCueBall()) {
+                        double dy = ball.getCenterY()-event.getY();
+                        double dx = ball.getCenterX()-event.getX();
+                        double alpha = Math.atan(dy/dx);
+                        if(ball.getCenterX() < event.getX()) {
+                            alpha -= Math.PI;
+                        }
+                        cueModel.setXY(event.getX(), event.getY());
+                        cueModel.setAlpha(alpha);
+                        cueModel.setCueBallX(ball.getCenterX());
+                        cueModel.setCueBallY(ball.getCenterY());
+                        cueView.update();
+                    }
+                }
                 break;
             case MAIN_MENU:
                 for(MenuButton btn : menuModel.getButtons()) {
@@ -175,13 +188,14 @@ public class FXMLPoolController {
                         for(Ball ball : tableModel.getBalls()) {
                             if(ball.isCueBall()) {
                                 ball.setVelocity(10);
-                                double dy = ball.getCenterY()-event.getY();
-                                double dx = ball.getCenterX()-event.getX();
+                                double dy = ball.getCenterY()-(event.getY());
+                                double dx = ball.getCenterX()-(event.getX());
                                 double alpha = Math.atan(dy/dx);
                                 if(ball.getCenterX() < event.getX()) {
                                     alpha -= Math.PI;
                                 }
                                 ball.setAlpha(alpha);
+                                cueModel.isVisible(false);
                             } else {
                                 ball.setAlpha(90 + Math.random());
                                 ball.setVelocity(10);
@@ -198,6 +212,7 @@ public class FXMLPoolController {
 
                             }
                         }
+                        cueModel.isVisible(true);
 
                     }
                 };
