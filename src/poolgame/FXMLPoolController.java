@@ -14,16 +14,24 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import poolgame.helpers.Navigation;
 import poolgame.helpers.UnknownStateException;
-import poolgame.models.Ball;
-import poolgame.models.Menu;
-import poolgame.models.MenuButton;
-import poolgame.models.Table;
+import poolgame.models.*;
+import poolgame.views.CueView;
 import poolgame.views.MenuView;
 import poolgame.views.TableView;
 
 public class FXMLPoolController {
 
     private Navigation navigation;
+
+    // Declare models
+    private Table tableModel;
+    private Menu menuModel;
+    private Cue cueModel;
+
+    // Declare views
+    private MenuView menuView;
+    private TableView tableView;
+    private CueView cueView;
 
     @FXML
     private ResourceBundle resources;
@@ -85,16 +93,9 @@ public class FXMLPoolController {
         }
     }
 
-    // Declare models
-    private Table tableModel;
-    private Menu menuModel;
-
-    // Declare views
-    private MenuView menuView;
-    private TableView tableView;
-
     public void setMenu(Menu mainMenu) { this.menuModel = mainMenu; }
     public void setModel(Table model) { this.tableModel = model; }
+    public void setCue(Cue cue) { this.cueModel = cue; }
 
     public void updateViews() throws UnknownStateException {
         switch(navigation) {
@@ -109,6 +110,10 @@ public class FXMLPoolController {
                 if(tableView == null) {
                     tableView = new TableView(tableModel);
                     table.getChildren().add(tableView);
+                }
+                if(cueView == null) {
+                    cueView = new CueView(cueModel);
+                    table.getChildren().add(cueView);
                 }
                 tableView.update();
                 break;
@@ -133,7 +138,8 @@ public class FXMLPoolController {
     private void mouseMoveHandler(MouseEvent event) throws UnknownStateException {
         switch (navigation) {
             case IN_GAME:
-
+                cueModel.setXY(event.getX(), event.getY());
+                cueView.update();
                 break;
             case MAIN_MENU:
                 for(MenuButton btn : menuModel.getButtons()) {

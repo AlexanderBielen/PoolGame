@@ -15,12 +15,8 @@ public class TableView  extends Region implements View {
 
     private ArrayList<BallView> ballViews;
 
-    private Table tableModel;
-
     public TableView(Table tableModel) {
-        this.tableModel = tableModel;
         this.setFocusTraversable(true);
-        this.tableModel = tableModel;
 
         Rectangle table = new Rectangle(0,0, WIDTH, HEIGHT);
         table.setFill(new Color(0, 0, 0, 1));
