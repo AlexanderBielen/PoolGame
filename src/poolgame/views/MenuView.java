@@ -15,17 +15,12 @@ public class MenuView extends Region implements View {
     public static int WIDTH = 550;
 
     private ArrayList<ButtonView> buttonViews;
-
-    private Menu model;
-
-    public MenuView(Menu model) {
-        this.model = model;
+    public MenuView(Menu menu) {
         this.setFocusTraversable(true);
-        this.model = model;
         Rectangle background = new Rectangle(0,0, WIDTH, HEIGHT);
         background.setFill(Color.LIGHTBLUE);
         buttonViews = new ArrayList<>();
-        for(MenuButton menuButton : model.getButtons()) {
+        for(MenuButton menuButton : menu.getButtons()) {
             buttonViews.add(new ButtonView(menuButton));
         }
 

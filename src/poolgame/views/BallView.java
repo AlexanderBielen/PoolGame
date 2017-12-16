@@ -27,8 +27,4 @@ public class BallView extends Group implements View {
         ballView.setTranslateY((ball.getCenterY()));
     }
 
-    public Circle getShape() {
-        return ballView;
-    }
-
 }

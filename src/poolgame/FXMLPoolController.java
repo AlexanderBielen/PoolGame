@@ -178,8 +178,6 @@ public class FXMLPoolController {
                 TimerTask timerTask = new TimerTask() {
                     @Override
                     public void run() {
-                        System.out.print("Ball shot");
-                        //Set cueball velocity to something
                         for(Ball ball : tableModel.getBalls()) {
                             if(ball.isCueBall()) {
                                 ball.setVelocity((cueModel.getPullBack() - 155) / 10);
@@ -191,6 +189,7 @@ public class FXMLPoolController {
                                 }
                                 ball.setAlpha(alpha);
                                 cueModel.isVisible(false);
+                                cueView.update();
                             }
                         }
                         while(ballsMoving()) {
@@ -210,7 +209,6 @@ public class FXMLPoolController {
                             }
                         }
                         cueModel.isVisible(true);
-
                     }
                 };
                 Thread t = new Thread(timerTask);

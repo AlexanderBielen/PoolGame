@@ -49,7 +49,4 @@ public class Table implements Model {
     public ArrayList<Ball> getBalls() {
         return balls;
     }
-
-    public int getWidth() { return WIDTH; }
-    public int getHeight() { return HEIGHT; }
 }

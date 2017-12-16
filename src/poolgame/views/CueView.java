@@ -37,6 +37,7 @@ public class CueView extends Group implements View {
 
     @Override
     public void update() {
+        cueView.setVisible(cue.isVisible());
         cueView.setTranslateX(cue.getCueBallX() - (Math.cos(cue.getAlpha()) * (cue.getPullBack() - 150)));
         cueView.setTranslateY(cue.getCueBallY() - cue.getWidth()/2 - (Math.sin(cue.getAlpha()) * (cue.getPullBack() - 150)));
         rotation.setAngle((cue.getAlpha()*(180/Math.PI))+180);

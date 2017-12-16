@@ -1,12 +1,7 @@
 package poolgame.models;
 
-
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import poolgame.helpers.Model;
-import poolgame.views.TableView;
-
-import javax.swing.table.TableModel;
 
 public class Ball implements Model {
 
@@ -23,7 +18,7 @@ public class Ball implements Model {
 
     private boolean isCueBall;
 
-    public Ball(int x, int y, Color color) {
+    Ball(int x, int y, Color color) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -33,7 +28,7 @@ public class Ball implements Model {
         isCueBall = false;
     }
 
-    public Ball(int x, int y, Color color, boolean isCueBall) {
+    Ball(int x, int y, Color color, boolean isCueBall) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -47,14 +42,6 @@ public class Ball implements Model {
         if(velocity > 0) {
             this.dx = Math.cos(alpha) * velocity;
             this.dy = Math.sin(alpha) * velocity;
-//            if(calculateCollision(dx, dy)) {
-//                this.dx = Math.cos(alpha) * velocity;
-//                this.dy = Math.sin(alpha) * velocity;
-//            }
-
-//            System.out.println("Delta v " + dV);
-//            System.out.println(dx + " " + dy + " || " + velocity + " " + alpha);
-
         }
     }
 
@@ -66,49 +53,6 @@ public class Ball implements Model {
         if(velocity < 0) {
             velocity = 0;
         }
-    }
-
-    private boolean calculateWallCollision(double dx, double dy) {
-        boolean recalculate = false;
-        if(Math.signum(dx) < 0 && (x+dx) < 30) {
-             // Making sure that the ball hits the edge
-            if(x <= 30) {
-                alpha = Math.PI - alpha;
-                recalculate = true;
-            } else {
-                this.dx = 30-x;
-                //this.dy = dy-(dx-this.dx);
-            }
-        } else if(Math.signum(dx) > 0 && (x+dx) > Table.WIDTH-30) {
-            if(x >= Table.WIDTH-30) {
-                alpha = Math.PI - alpha;
-                recalculate = true;
-            } else {
-                this.dx = Table.WIDTH-30 - x;
-                //this.dy = dy-(dx-this.dx);
-            }
-        }
-
-        if(Math.signum(dy) < 0 && (y+dy) < 30) {
-            if(y <= 30) {
-                alpha = Math.PI + (Math.PI - alpha);
-                recalculate = true;
-            } else {
-                this.dy = 30-y;
-                //this.dx = dx-(dy-this.dx);
-            }
-        }
-        else if(Math.signum(dy) > 0 && (y+dy) > Table.HEIGHT - 30) {
-            if(y >= Table.HEIGHT-30) {
-                alpha = Math.PI + (Math.PI - alpha);
-                recalculate = true;
-            } else {
-                this.dy = Table.HEIGHT-30 - y;
-                //this.dx = dx-(dy-this.dy);
-            }
-        }
-
-        return recalculate;
     }
 
     public int getRadius() {
