@@ -3,11 +3,14 @@ package poolgame.views;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import poolgame.helpers.View;
 import poolgame.models.Cue;
+
+import java.util.TimerTask;
 
 public class CueView extends Group implements View {
     private Cue cue;
@@ -24,19 +27,18 @@ public class CueView extends Group implements View {
         cueView = new Rectangle(0,0,cue.getLength(),cue.getWidth());
         cueView.setFill(new ImagePattern(img));
 
-        rotation = new Rotate(0);
+        rotation = new Rotate(0, 0, cue.getWidth()/2);
         cueView.getTransforms().add(rotation);
 
         getChildren().add(cueView);
+
         update();
     }
 
     @Override
     public void update() {
-        cueView.setTranslateX(cue.getCueBallX()+10);
-        cueView.setTranslateY(cue.getCueBallY()-cue.getWidth()/2+5);
+        cueView.setTranslateX(cue.getCueBallX() - (Math.cos(cue.getAlpha()) * (cue.getPullBack() - 150)));
+        cueView.setTranslateY(cue.getCueBallY() - cue.getWidth()/2 - (Math.sin(cue.getAlpha()) * (cue.getPullBack() - 150)));
         rotation.setAngle((cue.getAlpha()*(180/Math.PI))+180);
-        rotation.setPivotX(-10);
-        rotation.setPivotY(0);
     }
 }

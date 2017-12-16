@@ -146,6 +146,7 @@ public class FXMLPoolController {
                         if(ball.getCenterX() < event.getX()) {
                             alpha -= Math.PI;
                         }
+                        cueModel.setPullBack(Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2)));
                         cueModel.setXY(event.getX(), event.getY());
                         cueModel.setAlpha(alpha);
                         cueModel.setCueBallX(ball.getCenterX());
@@ -181,7 +182,7 @@ public class FXMLPoolController {
                         //Set cueball velocity to something
                         for(Ball ball : tableModel.getBalls()) {
                             if(ball.isCueBall()) {
-                                ball.setVelocity(10);
+                                ball.setVelocity((cueModel.getPullBack() - 155) / 10);
                                 double dy = ball.getCenterY()-(event.getY());
                                 double dx = ball.getCenterX()-(event.getX());
                                 double alpha = Math.atan(dy/dx);
@@ -203,7 +204,7 @@ public class FXMLPoolController {
                             }
                             tableView.update();
                             try {
-                                Thread.sleep(250);
+                                Thread.sleep(10);
                             } catch (InterruptedException ex) {
 
                             }

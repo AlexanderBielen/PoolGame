@@ -16,6 +16,6 @@
             <Label fx:id="debug3" text="debug3" />
         </items>
       </ToolBar>
-      <Pane fx:id="table" layoutY="40.0" prefHeight="400.0" prefWidth="400.0" />
+      <Pane fx:id="table" layoutX="150.0" layoutY="150.0" prefHeight="400.0" prefWidth="400.0" />
    </children>
 </AnchorPane>

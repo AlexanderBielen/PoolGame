@@ -28,7 +28,7 @@ public class Main extends Application {
         controller.navigate(Navigation.MAIN_MENU);
 
         primaryStage.setTitle("Pool game");
-        primaryStage.setScene(new Scene(root, 550, 740));
+        primaryStage.setScene(new Scene(root, 850, 1040)); // 550 740
         primaryStage.show();
     }
 

@@ -19,9 +19,12 @@ public class Cue implements Model  {
 
     private String imageLocation = "/poolgame/img/cue.png";
 
+    private double pullBack = 5;
+
     public Cue() {
         x = y = 0;
         isVisible = true;
+        pullBack = 155;
     }
 
     public void setXY(double x, double y) {
@@ -36,6 +39,10 @@ public class Cue implements Model  {
     }
     public void setCueBallY(double y) {
         this.cueBallY = y;
+    }
+    public void setPullBack(double pb) {
+        if(pb > 255 || pb < 155 ) { return; }
+        this. pullBack = pb;
     }
 
     public double getX() {
@@ -62,4 +69,9 @@ public class Cue implements Model  {
     public String getImageLocation() {
         return imageLocation;
     }
+
+    public double getPullBack() {
+        return pullBack;
+    }
+
 }
