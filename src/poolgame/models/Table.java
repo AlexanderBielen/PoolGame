@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import poolgame.helpers.Model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Table implements Model {
     public static int HEIGHT = 700;
@@ -13,6 +14,12 @@ public class Table implements Model {
     private int xt;
     private int yt;
 
+    private Color[] colors = {Color.GREEN, Color.BLUE, Color.RED, Color.YELLOW, Color.ORANGE, Color.BROWN, Color.GRAY, Color.PURPLE, Color.PINK, Color.LIGHTSALMON, Color.DARKGOLDENROD, Color.STEELBLUE, Color.CYAN, Color.CHOCOLATE};
+    private ArrayList<Color> colorPool;
+
+    private int[] rack = {1,2,3,4,5};
+    private int[][] colorScheme = {{0}, {0,0}, {0,1,0}, {0,0,0,0}, {0,0,0,0,0}}; // 0 = random color from colorpool; 1 = black
+
     public Table() {
         xt = WIDTH / 2;
         yt = HEIGHT / 3 * 2;
@@ -21,32 +28,31 @@ public class Table implements Model {
 
     private void initialize() {
         balls = new ArrayList<>();
+        colorPool = new ArrayList<>();
+        colorPool.addAll(Arrays.asList(colors));
         balls.add(new Ball(xt, yt - 350, Color.WHITE, true));
 
-        balls.add(new Ball(xt, yt, Color.BLUE));
-
-        balls.add(new Ball(xt-10, yt+20, Color.GREEN));
-        balls.add(new Ball(xt+10, yt+20, Color.GREEN));
-
-//        balls.add(new Ball(xt-20, yt+40, Color.RED));
-//        balls.add(new Ball(xt, yt+40, Color.BLACK));
-//        balls.add(new Ball(xt+20, yt+40, Color.YELLOW));
-//
-//        balls.add(new Ball(xt-30, yt+60, Color.GREEN));
-//        balls.add(new Ball(xt-10, yt+60, Color.BROWN));
-//        balls.add(new Ball(xt+10, yt+60, Color.ORANGE));
-//        balls.add(new Ball(xt+30, yt+60, Color.AQUA));
-//
-//        balls.add(new Ball(xt-40, yt+80, Color.PURPLE));
-//        balls.add(new Ball(xt-20, yt+80, Color.GRAY));
-//        balls.add(new Ball(xt, yt+80, Color.GREEN));
-//        balls.add(new Ball(xt+20, yt+80, Color.GREEN));
-//        balls.add(new Ball(xt+40, yt+80, Color.GREEN));
-
-
+        //dynamically generate rack
+        for(int i = 0; i < rack.length; i ++) {
+            for(int j = 0; j < rack[i]; j ++) {
+                Color ballColor = Color.BLACK;
+                if(colorScheme[i][j] == 0) {
+                    int r = (int)(Math.random() * colorPool.size());
+                    System.out.println(r);
+                    ballColor = colorPool.get(r);
+                    colorPool.remove(r);
+                }
+                balls.add(new Ball(xt + 10 - (i*10) + (j * 20), yt + (i * 18), ballColor));
+            }
+        }
     }
 
     public ArrayList<Ball> getBalls() {
         return balls;
+    }
+
+    private int calculatePositionInRack() {
+
+        return 1;
     }
 }

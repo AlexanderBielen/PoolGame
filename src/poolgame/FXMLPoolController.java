@@ -280,37 +280,42 @@ public class FXMLPoolController {
         double x = ball.getCenterX();
         double y = ball.getCenterY();
         double alpha = ball.getAlpha();
-        if(Math.signum(dx) < 0 && (x+dx) < 30) {
+        double wall = 20 + ball.getRadius();
+        if(Math.signum(dx) < 0 && (x+dx) < wall) {
             // Making sure that the ball hits the edge
-            if(x <= 30) {
+            if(x <= wall) {
                 ball.setAlpha(Math.PI - alpha);
+                ball.calculateTrajectory();
             } else {
-                ball.setDx(30-x);
-                //this.dy = dy-(dx-this.dx);
+                ball.setDx(wall-x);
+                ball.setDy(dy*(ball.getDx()/dx));
             }
-        } else if(Math.signum(dx) > 0 && (x+dx) > Table.WIDTH-30) {
-            if(x >= Table.WIDTH-30) {
+        } else if(Math.signum(dx) > 0 && (x+dx) > Table.WIDTH-wall) {
+            if(x >= Table.WIDTH-wall) {
                 ball.setAlpha(Math.PI - alpha);
+                ball.calculateTrajectory();
             } else {
-                ball.setDx(Table.WIDTH-30 - x);
-                //this.dy = dy-(dx-this.dx);
+                ball.setDx(Table.WIDTH-wall - x);
+                ball.setDy(dy*(ball.getDx()/dx));
             }
         }
 
-        if(Math.signum(dy) < 0 && (y+dy) < 30) {
-            if(y <= 30) {
+        if(Math.signum(dy) < 0 && (y+dy) < wall) {
+            if(y <= wall) {
                 ball.setAlpha(Math.PI + (Math.PI - alpha));
+                ball.calculateTrajectory();
             } else {
-                ball.setDy(30-y);
-                //this.dx = dx-(dy-this.dx);
+                ball.setDy(wall-y);
+                ball.setDx(dx*(ball.getDy()/dy));
             }
         }
-        else if(Math.signum(dy) > 0 && (y+dy) > Table.HEIGHT - 30) {
-            if(y >= Table.HEIGHT-30) {
+        else if(Math.signum(dy) > 0 && (y+dy) > Table.HEIGHT - wall) {
+            if(y >= Table.HEIGHT-wall) {
                 ball.setAlpha(Math.PI + (Math.PI - alpha));
+                ball.calculateTrajectory();
             } else {
-                ball.setDy(Table.HEIGHT-30 - y);
-                //this.dx = dx-(dy-this.dy);
+                ball.setDy(Table.HEIGHT-wall - y);
+                ball.setDx(dx*(ball.getDy()/dy));
             }
         }
     }
