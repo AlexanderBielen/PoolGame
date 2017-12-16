@@ -14,13 +14,12 @@ public class CueView extends Group implements View {
     private Rectangle cueView;
     private boolean isVisible;
     private Rotate rotation;
-    private ImageView cueImage;
 
     public CueView(Cue cue) {
         this.cue = cue;
         this.isVisible = true;
 
-        Image img = new Image(getClass().getResourceAsStream("/poolgame/img/cue.png"));
+        Image img = new Image(getClass().getResourceAsStream(cue.getImageLocation()));
 
         cueView = new Rectangle(0,0,cue.getLength(),cue.getWidth());
         cueView.setFill(new ImagePattern(img));

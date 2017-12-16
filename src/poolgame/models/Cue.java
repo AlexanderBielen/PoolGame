@@ -17,7 +17,7 @@ public class Cue implements Model  {
 
     private boolean isVisible;
 
-    private String imageLocation = "../img/cue.img";
+    private String imageLocation = "/poolgame/img/cue.png";
 
     public Cue() {
         x = y = 0;

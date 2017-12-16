@@ -2,6 +2,7 @@ package poolgame.models;
 
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import poolgame.helpers.Model;
 import poolgame.views.TableView;
 
@@ -42,29 +43,32 @@ public class Ball implements Model {
         this.isCueBall = isCueBall;
     }
 
-    public void tick() {
+    public void calculateTrajectory() {
         if(velocity > 0) {
             this.dx = Math.cos(alpha) * velocity;
             this.dy = Math.sin(alpha) * velocity;
-            if(calculateCollision(dx, dy)) {
-                this.dx = Math.cos(alpha) * velocity;
-                this.dy = Math.sin(alpha) * velocity;
-            }
+//            if(calculateCollision(dx, dy)) {
+//                this.dx = Math.cos(alpha) * velocity;
+//                this.dy = Math.sin(alpha) * velocity;
+//            }
 
-            double dV = 0.2 * 9.81 * (velocity/velocity+0.2)*0.01;
 //            System.out.println("Delta v " + dV);
 //            System.out.println(dx + " " + dy + " || " + velocity + " " + alpha);
 
-            velocity -= dV;
-            x += dx;
-            y += dy;
-            if(velocity < 0) {
-                velocity = 0;
-            }
         }
     }
 
-    private boolean calculateCollision(double dx, double dy) {
+    public void tick() {
+        double dV = 0.2 * 9.81 * (velocity/velocity+0.2)*0.01;
+        velocity -= dV;
+        x += dx;
+        y += dy;
+        if(velocity < 0) {
+            velocity = 0;
+        }
+    }
+
+    private boolean calculateWallCollision(double dx, double dy) {
         boolean recalculate = false;
         if(Math.signum(dx) < 0 && (x+dx) < 30) {
              // Making sure that the ball hits the edge
@@ -137,6 +141,19 @@ public class Ball implements Model {
 
     public void setAlpha(double alpha) {
         this.alpha = alpha;
+    }
+
+    public double getAlpha() { return alpha; }
+
+    public double getDx() { return dx; }
+
+    public double getDy() { return dy; }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+    public void setDy(double dy) {
+        this.dy = dy;
     }
 }
 

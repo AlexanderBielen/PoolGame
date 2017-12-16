@@ -1,15 +1,18 @@
 package poolgame;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 import poolgame.helpers.Navigation;
 import poolgame.helpers.UnknownStateException;
 import poolgame.models.*;
@@ -166,12 +169,6 @@ public class FXMLPoolController {
             default:
                 throw new UnknownStateException("Unknown navigation state");
         }
-        String msg =
-                "(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
-                        "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-                        "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-
-        //System.out.println(msg);
     }
 
     private void mouseClickHandler(MouseEvent event) throws UnknownStateException {
@@ -193,18 +190,20 @@ public class FXMLPoolController {
                                 }
                                 ball.setAlpha(alpha);
                                 cueModel.isVisible(false);
-                            } else {
-                                ball.setAlpha(90 + Math.random());
-                                ball.setVelocity(10);
                             }
                         }
                         while(ballsMoving()) {
                             for(Ball ball : tableModel.getBalls()) {
-                                ball.tick();
+                                if(ball.getVelocity() != 0) {
+                                    ball.calculateTrajectory();
+                                    calculateBallCollisions(ball);
+                                    calculateWallCollisions(ball);
+                                    ball.tick();
+                                }
                             }
                             tableView.update();
                             try {
-                                Thread.sleep(10);
+                                Thread.sleep(250);
                             } catch (InterruptedException ex) {
 
                             }
@@ -232,12 +231,6 @@ public class FXMLPoolController {
             default:
                 throw new UnknownStateException("Unknown navigation state");
         }
-        String msg =
-                "(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
-                        "(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-                        "(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-
-        //System.out.println(msg);
     }
 
     public boolean ballsMoving() {
@@ -245,11 +238,110 @@ public class FXMLPoolController {
 
         boolean movement = false;
         for(Ball ball : tableModel.getBalls()) {
-            if(ball.getVelocity() != 0) {
+            if(ball.getVelocity() > 0) {
                 movement = true;
                 break;
             }
         }
         return movement;
+    }
+
+    private void calculateBallCollisions(Ball ball) {
+        Ball closestBall = null;
+        for(Ball ball2 : tableModel.getBalls()) {
+            if (!ball2.equals(ball)) {
+                if (closestBall == null) {
+                    closestBall = ball2;
+                }
+                if (calculateDistance(ball, ball2) < calculateDistance(ball, closestBall)) {
+                    closestBall = ball2;
+                }
+            }
+        }
+
+        double futureDistance = calculateFutureDistance(ball, closestBall);
+        double distance = calculateDistance(ball, closestBall);
+        System.out.println("current distance " + distance + " future distance " + futureDistance);
+        if(distance <= (ball.getRadius() * 2 + (ball.getRadius() * 0.05))) {
+            collide(ball, closestBall);
+        } else if(futureDistance <= ball.getRadius() * 2) {
+            double travel = distance - (2 * ball.getRadius());
+            double travel2 = Math.sqrt(Math.pow(ball.getCenterX() + ball.getDx() - ball.getCenterX(), 2) + Math.pow(ball.getCenterY() + ball.getDy() - ball.getCenterY(), 2));
+
+            double factor = travel / travel2;
+            ball.setDx(ball.getDx() * factor);
+            ball.setDy(ball.getDy() * factor);
+            System.out.println("new future distance " + calculateFutureDistance(ball, closestBall));
+        }
+    }
+
+    private void calculateWallCollisions(Ball ball) {
+        double dx = ball.getDx();
+        double dy = ball.getDy();
+        double x = ball.getCenterX();
+        double y = ball.getCenterY();
+        double alpha = ball.getAlpha();
+        if(Math.signum(dx) < 0 && (x+dx) < 30) {
+            // Making sure that the ball hits the edge
+            if(x <= 30) {
+                ball.setAlpha(Math.PI - alpha);
+            } else {
+                ball.setDx(30-x);
+                //this.dy = dy-(dx-this.dx);
+            }
+        } else if(Math.signum(dx) > 0 && (x+dx) > Table.WIDTH-30) {
+            if(x >= Table.WIDTH-30) {
+                ball.setAlpha(Math.PI - alpha);
+            } else {
+                ball.setDx(Table.WIDTH-30 - x);
+                //this.dy = dy-(dx-this.dx);
+            }
+        }
+
+        if(Math.signum(dy) < 0 && (y+dy) < 30) {
+            if(y <= 30) {
+                ball.setAlpha(Math.PI + (Math.PI - alpha));
+            } else {
+                ball.setDy(30-y);
+                //this.dx = dx-(dy-this.dx);
+            }
+        }
+        else if(Math.signum(dy) > 0 && (y+dy) > Table.HEIGHT - 30) {
+            if(y >= Table.HEIGHT-30) {
+                ball.setAlpha(Math.PI + (Math.PI - alpha));
+            } else {
+                ball.setDy(Table.HEIGHT-30 - y);
+                //this.dx = dx-(dy-this.dy);
+            }
+        }
+    }
+
+    private double calculateDistance(Ball ball1, Ball ball2) {
+        return Math.sqrt(Math.pow(ball1.getCenterX() - ball2.getCenterX(), 2) + Math.pow(ball1.getCenterY() - ball2.getCenterY(), 2));
+    }
+
+    private double calculateFutureDistance(Ball ball1, Ball ball2) {
+        return Math.sqrt(Math.pow(ball1.getCenterX() + ball1.getDx() - ball2.getCenterX(), 2) + Math.pow(ball1.getCenterY() + ball1.getDy() - ball2.getCenterY(), 2));
+    }
+
+    private void collide(Ball ball1, Ball ball2) {
+        for(Ball b : tableModel.getBalls()) {
+            if(b.equals(ball1)) {
+                b.setVelocity(ball1.getVelocity()*0.8);
+                b.setAlpha(Math.PI - ball1.getAlpha());
+            }
+            if(b.equals(ball2)) {
+                double dy = ball2.getCenterY()-ball1.getCenterY();
+                double dx = ball2.getCenterX()-ball1.getCenterX();
+                double alpha = Math.atan(dy/dx);
+
+                if(ball2.getCenterX() < ball1.getCenterX()) {
+                    alpha += Math.PI;
+                }
+
+                b.setVelocity(ball1.getVelocity()*0.9);
+                b.setAlpha(alpha);
+            }
+        }
     }
 }
