@@ -11,7 +11,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MenuView extends Region implements View {
+    // Properties
     private ArrayList<ButtonView> buttonViews;
+
+    /**
+     * New instance of MenuView
+     *
+     * @param menu the model to take data from
+     */
     public MenuView(Menu menu) {
         this.setFocusTraversable(true);
         Rectangle background = new Rectangle(0,0, Menu.WIDTH, Menu.HEIGHT);
@@ -27,7 +34,9 @@ public class MenuView extends Region implements View {
         update();
     }
 
-
+    /**
+     * Updates the menu buttons
+     */
     @Override
     public void update() {
         for(ButtonView btn : buttonViews) {

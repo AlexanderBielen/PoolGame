@@ -11,11 +11,17 @@ import poolgame.helpers.View;
 import poolgame.models.Cue;
 
 public class CueView extends Group implements View {
+    // Properties
     private Cue cue;
     private Rectangle cueView;
     private boolean isVisible;
     private Rotate rotation;
 
+    /**
+     * New instance of CueView
+     *
+     * @param cue the model to take data from
+     */
     public CueView(Cue cue) {
         this.cue = cue;
         this.isVisible = true;
@@ -33,11 +39,14 @@ public class CueView extends Group implements View {
         update();
     }
 
+    /**
+     * Updates the cue position and sets its visibility
+     */
     @Override
     public void update() {
         cueView.setVisible(cue.isVisible());
-        cueView.setTranslateX(cue.getCueBallX() - (Math.cos(cue.getAlpha()) * (cue.getPullBack() - 150)));
-        cueView.setTranslateY(cue.getCueBallY() - cue.getWidth()/2 - (Math.sin(cue.getAlpha()) * (cue.getPullBack() - 150)));
+        cueView.setTranslateX(cue.getCueBallX() - (Math.cos(cue.getAlpha()) * (cue.getPullBack() - 50)));
+        cueView.setTranslateY(cue.getCueBallY() - cue.getWidth()/2 - (Math.sin(cue.getAlpha()) * (cue.getPullBack() - 50)));
         rotation.setAngle((cue.getAlpha()*(180/Math.PI))+180);
     }
 }

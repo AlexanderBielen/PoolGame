@@ -4,6 +4,7 @@ import poolgame.helpers.Model;
 import poolgame.helpers.Navigation;
 
 public class MenuButton implements Model {
+    // Properties
     private int height;
     private int width;
 
@@ -16,6 +17,16 @@ public class MenuButton implements Model {
 
     private Navigation clickLocation;
 
+    /**
+     * New instance if menuButton
+     *
+     * @param height of the button
+     * @param width of the button
+     * @param beginX top left X coordinate
+     * @param beginY top left Y coordinate
+     * @param text inner text of the button
+     * @param clickLocation navigation location after click
+     */
     MenuButton(int height, int width, int beginX, int beginY, String text, Navigation clickLocation) {
         this.height = height;
         this.width = width;
@@ -28,10 +39,20 @@ public class MenuButton implements Model {
         this.clickLocation = clickLocation;
     }
 
+    /**
+     * Returns its calculated X position
+     *
+     * @return X position
+     */
     public double getXPosition() {
         return ((beginX * Menu.WIDTH )/ 2 ) - width/2;
     }
 
+    /**
+     * Return its calculated Y position
+     *
+     * @return Y position
+     */
     public double getYPosition() {
         return beginY * Menu.HEIGHT / 7;
     }

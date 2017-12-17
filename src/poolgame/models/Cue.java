@@ -3,8 +3,7 @@ package poolgame.models;
 import poolgame.helpers.Model;
 
 public class Cue implements Model  {
-    //https://pngtree.com/freepng/hand-painted-cue_909840.html
-
+    // Properties
     private double x;
     private double y;
     private double alpha;
@@ -17,16 +16,26 @@ public class Cue implements Model  {
 
     private boolean isVisible;
 
+    //Source of the cue image: https://pngtree.com/freepng/hand-painted-cue_909840.html
     private String imageLocation = "/poolgame/img/cue.png";
 
     private double pullBack = 5;
 
+    /**
+     * New Cue instance
+     */
     public Cue() {
         x = y = 0;
         isVisible = true;
         pullBack = 155;
     }
 
+    /**
+     * Sets the top left x and y coordinate
+     *
+     * @param x top left x coordinate
+     * @param y top left y coordinate
+     */
     public void setXY(double x, double y) {
         this.x = x;
         this.y = y;
@@ -173,8 +182,8 @@ public class Cue implements Model  {
      * @param pullBack the pullBack to set
      */
     public void setPullBack(double pullBack) {
-        if(pullBack > 255) { pullBack = 255; }
-        if(pullBack < 155) { pullBack = 155; }
+        if(pullBack > 155) { pullBack = 155; }
+        if(pullBack < 55) { pullBack = 55; }
         this.pullBack = pullBack;
     }
 

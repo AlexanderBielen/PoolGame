@@ -4,23 +4,30 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import poolgame.helpers.View;
 import poolgame.models.Ball;
+import poolgame.models.Pocket;
 import poolgame.models.Table;
 
 import javafx.scene.layout.Region;
 import java.util.ArrayList;
 
 public class TableView  extends Region implements View {
-
-
+    // Properties
     private ArrayList<BallView> ballViews;
 
+    private ArrayList<PocketView> pocketViews;
+
+    /**
+     * New instance of TableView that draws a pool table, balls and pockets
+     *
+     * @param tableModel the model to take data from
+     */
     public TableView(Table tableModel) {
         this.setFocusTraversable(true);
 
-        Rectangle table = new Rectangle(0,0, Table.WIDTH, Table.HEIGHT);
-        table.setFill(new Color(0, 0, 0, 1));
-        table.setArcWidth(5);
-        table.setArcHeight(5);
+        Rectangle table = new Rectangle(-5,-5, Table.WIDTH + 10, Table.HEIGHT + 10);
+        table.setFill(Color.SADDLEBROWN);
+        table.setArcWidth(30);
+        table.setArcHeight(30);
 
         Rectangle clothEdge = new Rectangle(10,10,Table.WIDTH-20,Table.HEIGHT-20);
         clothEdge.setFill(new Color(0, 0.1765, 0.4157, 1));
@@ -37,11 +44,20 @@ public class TableView  extends Region implements View {
             ballViews.add(new BallView(ball));
         }
 
+        pocketViews = new ArrayList<>();
+        for(Pocket pocket : tableModel.getPockets()) {
+            pocketViews.add(new PocketView(pocket));
+        }
+
+        getChildren().addAll(pocketViews);
         getChildren().addAll(ballViews);
 
         update();
     }
 
+    /**
+     * Updates the views of all balls
+     */
     @Override
     public void update() {
         for(BallView bv : ballViews) {

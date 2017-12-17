@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -25,14 +26,14 @@ import poolgame.views.TableView;
 
 import javax.print.attribute.standard.MediaSize;
 
-//TODO adding pockets
+//TODO Fix what happens after ball is pocketed
 //TODO Settings page
 //TODO Fix collisions
-//TODO javadoc
+//TODO clean code
 
 
 public class FXMLPoolController {
-
+    // Properties
     private Navigation navigation;
 
     // Declare models
@@ -46,26 +47,17 @@ public class FXMLPoolController {
     private CueView cueView;
 
     @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
     private Button backButton;
-
-    @FXML
-    private Label debug1;
-
-    @FXML
-    private Label debug2;
-
-    @FXML
-    private Label debug3;
 
     @FXML
     private Pane table;
 
+
+    /**
+     * Initialized the controller and initiates the mouse handlers
+     *
+     * @throws UnknownStateException when the current navigation state is uknown
+     */
     private void initialize() throws UnknownStateException {
         backButton.setOnAction(this::reset);
 
@@ -106,10 +98,32 @@ public class FXMLPoolController {
         }
     }
 
+    /**
+     * Sets the menuModel
+     *
+     * @param mainMenu the model to set
+     */
     public void setMenu(Menu mainMenu) { this.menuModel = mainMenu; }
+
+    /**
+     * Sets the tableModel
+     *
+     * @param model the model to set
+     */
     public void setModel(Table model) { this.tableModel = model; }
+
+    /**
+     * Sets the cueModel
+     *
+     * @param cue the model to set
+     */
     public void setCue(Cue cue) { this.cueModel = cue; }
 
+    /**
+     * Updates all the views according to the current navigation
+     *
+     * @throws UnknownStateException when the current navigation state is unknown
+     */
     public void updateViews() throws UnknownStateException {
         switch(navigation) {
             case MAIN_MENU:
@@ -143,6 +157,11 @@ public class FXMLPoolController {
         }
     }
 
+    /**
+     * Navigates to given navigation state
+     * @param navigation state to navigate to
+     * @throws UnknownStateException when the state is unknown
+     */
     public void navigate(Navigation navigation) throws UnknownStateException {
         if(this.navigation != navigation) {
             clearTable();
@@ -151,6 +170,9 @@ public class FXMLPoolController {
         }
     }
 
+    /**
+     * Resets all views and models and clears the canvas
+     */
     private void clearTable() {
         tableModel = new Table();
         cueModel = new Cue();
@@ -163,6 +185,11 @@ public class FXMLPoolController {
         table.getChildren().clear();
     }
 
+    /**
+     * Clears the table and navigates back to the main menu when the back button is clicked
+     *
+     * @param e ActionEvent of back button
+     */
     public void reset(ActionEvent e){
         try {
             clearTable();
@@ -171,7 +198,12 @@ public class FXMLPoolController {
 
         }
     }
-
+    /**
+     * Handles a mouse move event
+     *
+     * @param event MouseEvent to use
+     * @throws UnknownStateException when it enters an unknown navigation state
+     */
     private void mouseMoveHandler(MouseEvent event) throws UnknownStateException {
         switch (navigation) {
             case IN_GAME:
@@ -206,6 +238,12 @@ public class FXMLPoolController {
         }
     }
 
+    /**
+     * Handles a mouse click event
+     *
+     * @param event MouseEvent to use
+     * @throws UnknownStateException when it enters an unknown navigation state
+     */
     private void mouseClickHandler(MouseEvent event) throws UnknownStateException {
         switch (navigation) {
             case IN_GAME:
@@ -214,7 +252,7 @@ public class FXMLPoolController {
                     public void run() {
                         for(Ball ball : tableModel.getBalls()) {
                             if(ball.isCueBall()) {
-                                ball.setVelocity((cueModel.getPullBack() - 155) / 10);
+                                ball.setVelocity((cueModel.getPullBack() - 55) / 10);
                                 double dy = ball.getY()-(event.getY());
                                 double dx = ball.getX()-(event.getX());
                                 double alpha = Math.atan(dy/dx);
@@ -263,7 +301,12 @@ public class FXMLPoolController {
         }
     }
 
-    public boolean ballsMoving() {
+    /**
+     * Checks all balls on the table if they are moving
+     *
+     * @return true if there are moving balls
+     */
+    private boolean ballsMoving() {
         if(navigation != Navigation.IN_GAME) { return false; }
 
         boolean movement = false;
@@ -276,6 +319,11 @@ public class FXMLPoolController {
         return movement;
     }
 
+    /**
+     * Calculates if given ball is colliding with any other ball
+     *
+     * @param ball ball to check
+     */
     private void calculateBallCollisions(Ball ball) {
         Ball closestBall = null;
         for(Ball ball2 : tableModel.getBalls()) {
@@ -305,6 +353,11 @@ public class FXMLPoolController {
         }
     }
 
+    /**
+     * Checks if given ball is colliding with a wall or pocket
+     *
+     * @param ball ball to check
+     */
     private void calculateWallCollisions(Ball ball) {
         double dx = ball.getDx();
         double dy = ball.getDy();
@@ -312,8 +365,11 @@ public class FXMLPoolController {
         double y = ball.getY();
         double alpha = ball.getAlpha();
         double wall = 20 + ball.getRadius();
+
         if(Math.signum(dx) < 0 && (x+dx) < wall) {
             if(x <= wall) {
+                //first Check if it is not a pocket
+                if(checkPocket(ball)) return;
                 ball.setAlpha(Math.PI - alpha);
                 ball.calculateTrajectory();
             } else {
@@ -322,6 +378,7 @@ public class FXMLPoolController {
             }
         } else if(Math.signum(dx) > 0 && (x+dx) > Table.WIDTH-wall) {
             if(x >= Table.WIDTH-wall) {
+                if(checkPocket(ball)) return;
                 ball.setAlpha(Math.PI - alpha);
                 ball.calculateTrajectory();
             } else {
@@ -350,14 +407,36 @@ public class FXMLPoolController {
         }
     }
 
+    /**
+     * Calculates the current distance between two balls
+     *
+     * @param ball1 first ball
+     * @param ball2 second ball
+     *
+     * @return distance between ball1 and ball2
+     */
     private double calculateDistance(Ball ball1, Ball ball2) {
         return Math.sqrt(Math.pow(ball1.getX() - ball2.getX(), 2) + Math.pow(ball1.getY() - ball2.getY(), 2));
     }
 
+    /**
+     * Calculates what the distance between ball1 and 2 will be in the next game tick
+     *
+     * @param ball1 first ball
+     * @param ball2 second ball
+     *
+     * @return distance between ball1 and ball2
+     */
     private double calculateFutureDistance(Ball ball1, Ball ball2) {
         return Math.sqrt(Math.pow(ball1.getX() + ball1.getDx() - ball2.getX(), 2) + Math.pow(ball1.getY() + ball1.getDy() - ball2.getY(), 2));
     }
 
+    /**
+     * Calculates new trajectories after the 2 given balls collide
+     *
+     * @param ball1 first ball
+     * @param ball2 second ball
+     */
     private void collide(Ball ball1, Ball ball2) {
         for(Ball b : tableModel.getBalls()) {
             if(b.equals(ball1)) {
@@ -379,10 +458,67 @@ public class FXMLPoolController {
         }
     }
 
+    /**
+     * Checks if given ball is in a pocket
+     *
+     * @param ball ball to check
+     *
+     * @return true if the ball is in a pocket
+     */
+    private boolean checkPocket(Ball ball) {
+        for(Pocket p: tableModel.getPockets()) {
+            if(p.isInPocket(ball)) {
+                if(ball.isCueBall()) {
+//                    showGameLostMessage();
+                } else {
+                    ball.setPocketed(true);
+                    tableModel.setPocketedBalls(tableModel.getPocketedBalls()+1);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the given mouse coordinates are within the buttons boundary's
+     *
+     * @param event MouseEvent that contain cursor coordinates
+     * @param btn MenuButton to check
+     *
+     * @return true if mouse is hovering over given button
+     */
     private boolean mouseIsOver(MouseEvent event, MenuButton btn) {
         return event.getX() > btn.getXPosition()
                 && event.getX() < btn.getXPosition() + btn.getWidth()
                 && event.getY() > btn.getYPosition()
                 && event.getY() < btn.getYPosition()  + btn.getHeight();
+    }
+
+    /**
+     * Shows an alert with a lose message
+     */
+    private void showGameLostMessage() {
+        showAlert("You lost!", "You potted the cue ball..");
+    }
+
+    /**
+     * Shows an alert with a win message
+     */
+    private void showGameWonMessage() {
+        showAlert("You won!", "You potted all balls!");
+    }
+
+    /**
+     * Shows an alert
+     * @param title title of the alert
+     * @param message content of the alert
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 }

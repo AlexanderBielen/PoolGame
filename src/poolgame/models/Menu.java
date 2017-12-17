@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Menu implements Model {
+    // Properties
     public static int HEIGHT = Table.HEIGHT;
     public static int WIDTH = Table.WIDTH;
 
@@ -15,6 +16,10 @@ public class Menu implements Model {
         Initialize();
     }
 
+    /**
+     * Initializes the Menu
+     * Generates the buttons and adds it to the button list
+     */
     private void Initialize() {
         menuButtonList = new ArrayList<>();
         MenuButton beginGame = new MenuButton(50, 250, 1, 1, "Start game", Navigation.IN_GAME);

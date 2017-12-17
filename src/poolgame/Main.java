@@ -34,7 +34,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Pool game");
 
-        //https://www.freepik.com/free-vector/wood-planks-texture-background-parquet-flooring_886477.htm#term=parquet&page=1&position=4
+        //Source of the background image: https://www.freepik.com/free-vector/wood-planks-texture-background-parquet-flooring_886477.htm#term=parquet&page=1&position=4
         Image img = new Image(getClass().getResourceAsStream("/poolgame/img/background.jpg"));
 
         primaryStage.setScene(new Scene(root, 692, 800, new ImagePattern(img)));

@@ -10,10 +10,16 @@ import poolgame.models.Menu;
 import poolgame.models.MenuButton;
 
 public class ButtonView extends Group implements View {
+    // Properties
     private MenuButton menuButton;
     private Rectangle buttonView;
     private Text buttonText;
 
+    /**
+     * New instance of ButtonView
+     *
+     * @param menuButton the model to take data from
+     */
     ButtonView(MenuButton menuButton) {
         this.menuButton = menuButton;
         buttonView = new Rectangle(0,0, menuButton.getWidth(), menuButton.getHeight());
@@ -34,6 +40,9 @@ public class ButtonView extends Group implements View {
         update();
     }
 
+    /**
+     * Updates the button position and stroke
+     */
     @Override
     public void update() {
         buttonView.setTranslateX(menuButton.getXPosition());

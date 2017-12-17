@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import poolgame.helpers.Model;
 
 public class Ball implements Model {
-
+    // Properties
     private int radius = 8;
 
     private Color color;
@@ -17,7 +17,15 @@ public class Ball implements Model {
     private double dy;
 
     private boolean isCueBall;
+    private boolean isPocketed;
 
+    /**
+     * New Ball instance that is not a cue ball
+     *
+     * @param x center x coordinate
+     * @param y center y coordinate
+     * @param color ball color
+     */
     Ball(int x, int y, Color color) {
         this.x = x;
         this.y = y;
@@ -28,6 +36,14 @@ public class Ball implements Model {
         isCueBall = false;
     }
 
+    /**
+     * New Ball instance with option to make it the cue ball
+     *
+     * @param x center x coordinate
+     * @param y center y coordinate
+     * @param color ball color
+     * @param isCueBall boolean to set if cue ball
+     */
     Ball(int x, int y, Color color, boolean isCueBall) {
         this.x = x;
         this.y = y;
@@ -38,6 +54,9 @@ public class Ball implements Model {
         this.isCueBall = isCueBall;
     }
 
+    /**
+     * Calculates the balls future move
+     */
     public void calculateTrajectory() {
         if(velocity > 0) {
             this.dx = Math.cos(alpha) * velocity;
@@ -45,8 +64,11 @@ public class Ball implements Model {
         }
     }
 
-
+    /**
+     * Executes the queued moves
+     */
     public void tick() {
+        if(isPocketed) return;
         double dV = 0.2 * 9.81 * (velocity/velocity+0.2)*0.01;
         velocity -= dV;
         x += dx;
@@ -217,6 +239,27 @@ public class Ball implements Model {
      */
     public void setCueBall(boolean cueBall) {
         isCueBall = cueBall;
+    }
+
+    /**
+     * Gets isPocketed
+     *
+     * @return value of isPocketed
+     */
+    public boolean isPocketed() {
+        return isPocketed;
+    }
+
+    /**
+     * Sets isPocketed
+     *
+     * @param pocketed the pocketed to set
+     */
+    public void setPocketed(boolean pocketed) {
+        velocity = 0;
+        dx = 0;
+        dy = 0;
+        isPocketed = pocketed;
     }
 }
 
