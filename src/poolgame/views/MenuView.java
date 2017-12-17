@@ -11,16 +11,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MenuView extends Region implements View {
-    public static int HEIGHT = 700;
-    public static int WIDTH = 550;
-
     private ArrayList<ButtonView> buttonViews;
     public MenuView(Menu menu) {
         this.setFocusTraversable(true);
-        Rectangle background = new Rectangle(0,0, WIDTH, HEIGHT);
+        Rectangle background = new Rectangle(0,0, Menu.WIDTH, Menu.HEIGHT);
         background.setFill(Color.LIGHTBLUE);
         buttonViews = new ArrayList<>();
-        for(MenuButton menuButton : menu.getButtons()) {
+        for(MenuButton menuButton : menu.getMenuButtonList()) {
             buttonViews.add(new ButtonView(menuButton));
         }
 

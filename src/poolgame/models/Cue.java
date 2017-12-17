@@ -31,39 +31,151 @@ public class Cue implements Model  {
         this.x = x;
         this.y = y;
     }
-    public void setAlpha(double alpha) {
-        this.alpha = alpha;
-    }
-    public void setCueBallX(double x) {
-        this.cueBallX = x;
-    }
-    public void setCueBallY(double y) {
-        this.cueBallY = y;
-    }
-    public void setPullBack(double pb) {
-        if(pb > 255 || pb < 155 ) { return; }
-        this. pullBack = pb;
-    }
 
-    public double getWidth() { return width; }
-    public double getLength() { return length; }
+    /**
+     * Gets alpha
+     *
+     * @return value of alpha
+     */
     public double getAlpha() {
         return alpha;
     }
-    public double getCueBallX() { return cueBallX; }
-    public double getCueBallY() { return cueBallY; }
 
-    public void isVisible(boolean isVis) {
-        this.isVisible = isVis;
+    /**
+     * Sets alpha
+     *
+     * @param alpha the alpha to set
+     */
+    public void setAlpha(double alpha) {
+        this.alpha = alpha;
     }
-    public boolean isVisible() { return isVisible; }
 
+    /**
+     * Gets cueBallX
+     *
+     * @return value of cueBallX
+     */
+    public double getCueBallX() {
+        return cueBallX;
+    }
+
+    /**
+     * Sets cueBallX
+     *
+     * @param cueBallX the cueBallX to set
+     */
+    public void setCueBallX(double cueBallX) {
+        this.cueBallX = cueBallX;
+    }
+
+    /**
+     * Gets cueBallY
+     *
+     * @return value of cueBallY
+     */
+    public double getCueBallY() {
+        return cueBallY;
+    }
+
+    /**
+     * Sets cueBallY
+     *
+     * @param cueBallY the cueBallY to set
+     */
+    public void setCueBallY(double cueBallY) {
+        this.cueBallY = cueBallY;
+    }
+
+    /**
+     * Gets length
+     *
+     * @return value of length
+     */
+    public double getLength() {
+        return length;
+    }
+
+    /**
+     * Sets length
+     *
+     * @param length the length to set
+     */
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    /**
+     * Gets width
+     *
+     * @return value of width
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    /**
+     * Sets width
+     *
+     * @param width the width to set
+     */
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    /**
+     * Gets isVisible
+     *
+     * @return value of isVisible
+     */
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    /**
+     * Sets isVisible
+     *
+     * @param visible the visible to set
+     */
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    /**
+     * Gets imageLocation
+     *
+     * @return value of imageLocation
+     */
     public String getImageLocation() {
         return imageLocation;
     }
 
+    /**
+     * Sets imageLocation
+     *
+     * @param imageLocation the imageLocation to set
+     */
+    public void setImageLocation(String imageLocation) {
+        this.imageLocation = imageLocation;
+    }
+
+    /**
+     * Gets pullBack
+     *
+     * @return value of pullBack
+     */
     public double getPullBack() {
         return pullBack;
+    }
+
+    /**
+     * Sets pullBack
+     *
+     * @param pullBack the pullBack to set
+     */
+    public void setPullBack(double pullBack) {
+        if(pullBack > 255) { pullBack = 255; }
+        if(pullBack < 155) { pullBack = 155; }
+        this.pullBack = pullBack;
     }
 
 }

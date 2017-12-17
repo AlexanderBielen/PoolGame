@@ -4,7 +4,9 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import poolgame.helpers.View;
+import poolgame.models.Menu;
 import poolgame.models.MenuButton;
 
 public class ButtonView extends Group implements View {
@@ -16,8 +18,13 @@ public class ButtonView extends Group implements View {
         this.menuButton = menuButton;
         buttonView = new Rectangle(0,0, menuButton.getWidth(), menuButton.getHeight());
         buttonView.setFill(Color.YELLOW);
-        buttonText = new Text(50,30, menuButton.getText());
+        buttonView.setStroke(Color.BLACK);
+        buttonView.setArcHeight(10);
+        buttonView.setArcWidth(10);
 
+        buttonText = new Text(75,30, menuButton.getText());
+        buttonText.setWrappingWidth(100);
+        buttonText.setTextAlignment(TextAlignment.CENTER);
 
         buttonText.translateXProperty().bind(buttonView.translateXProperty());
         buttonText.translateYProperty().bind(buttonView.translateYProperty());
@@ -29,8 +36,8 @@ public class ButtonView extends Group implements View {
 
     @Override
     public void update() {
-        buttonView.setTranslateX((menuButton.getBeginX() * MenuView.WIDTH )/ 3);
-        buttonView.setTranslateY((menuButton.getBeginY() * MenuView.HEIGHT) / 10);
-        buttonView.setFill(menuButton.isActive() ? Color.RED : Color.YELLOW);
+        buttonView.setTranslateX(menuButton.getXPosition());
+        buttonView.setTranslateY(menuButton.getYPosition());
+        buttonView.setStrokeWidth(menuButton.isActive() ? 5 : 0);
     }
 }

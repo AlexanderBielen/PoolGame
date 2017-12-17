@@ -8,14 +8,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poolgame.FXMLPoolController">
    <children>
-      <ToolBar prefHeight="40.0" prefWidth="550.0">
-        <items>
-          <Button fx:id="newGame" mnemonicParsing="false" text="New game" />
-            <Label fx:id="debug1" text="debug1" />
-            <Label fx:id="debug2" text="debug2" />
-            <Label fx:id="debug3" text="debug3" />
-        </items>
-      </ToolBar>
       <Pane fx:id="table" layoutX="150.0" layoutY="150.0" prefHeight="400.0" prefWidth="400.0" />
    </children>
 </AnchorPane>

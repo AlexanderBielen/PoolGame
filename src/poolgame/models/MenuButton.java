@@ -28,19 +28,137 @@ public class MenuButton implements Model {
         this.clickLocation = clickLocation;
     }
 
-    public int getWidth() { return width; }
+    public double getXPosition() {
+        return ((beginX * Menu.WIDTH )/ 2 ) - width/2;
+    }
 
-    public int getHeight() { return height; }
+    public double getYPosition() {
+        return beginY * Menu.HEIGHT / 7;
+    }
 
-    public int getBeginX() { return beginX; }
+    /**
+     * Gets height
+     *
+     * @return value of height
+     */
+    public int getHeight() {
+        return height;
+    }
 
-    public int getBeginY() { return beginY; }
+    /**
+     * Sets height
+     *
+     * @param height the height to set
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
-    public String getText() { return text; }
+    /**
+     * Gets width
+     *
+     * @return value of width
+     */
+    public int getWidth() {
+        return width;
+    }
 
-    public boolean isActive() { return isActive; }
+    /**
+     * Sets width
+     *
+     * @param width the width to set
+     */
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
-    public void setActive(boolean state) { this.isActive = state; }
+    /**
+     * Gets beginX
+     *
+     * @return value of beginX
+     */
+    public int getBeginX() {
+        return beginX;
+    }
 
-    public Navigation getClickLocation() { return clickLocation; }
+    /**
+     * Sets beginX
+     *
+     * @param beginX the beginX to set
+     */
+    public void setBeginX(int beginX) {
+        this.beginX = beginX;
+    }
+
+    /**
+     * Gets beginY
+     *
+     * @return value of beginY
+     */
+    public int getBeginY() {
+        return beginY;
+    }
+
+    /**
+     * Sets beginY
+     *
+     * @param beginY the beginY to set
+     */
+    public void setBeginY(int beginY) {
+        this.beginY = beginY;
+    }
+
+    /**
+     * Gets text
+     *
+     * @return value of text
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * Sets text
+     *
+     * @param text the text to set
+     */
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    /**
+     * Gets isActive
+     *
+     * @return value of isActive
+     */
+    public boolean isActive() {
+        return isActive;
+    }
+
+    /**
+     * Sets isActive
+     *
+     * @param active the active to set
+     */
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    /**
+     * Gets clickLocation
+     *
+     * @return value of clickLocation
+     */
+    public Navigation getClickLocation() {
+        return clickLocation;
+    }
+
+    /**
+     * Sets clickLocation
+     *
+     * @param clickLocation the clickLocation to set
+     */
+    public void setClickLocation(Navigation clickLocation) {
+        this.clickLocation = clickLocation;
+    }
 }

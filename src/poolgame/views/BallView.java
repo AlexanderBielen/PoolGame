@@ -23,8 +23,8 @@ public class BallView extends Group implements View {
 
     @Override
     public void update() {
-        ballView.setTranslateX((ball.getCenterX()));
-        ballView.setTranslateY((ball.getCenterY()));
+        ballView.setTranslateX((ball.getX()));
+        ballView.setTranslateY((ball.getY()));
     }
 
 }

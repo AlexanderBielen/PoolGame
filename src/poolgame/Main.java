@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import poolgame.helpers.Navigation;
 import poolgame.models.Cue;
@@ -20,6 +22,7 @@ public class Main extends Application {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPoolController.fxml"));
         Parent root = loader.load();
+        root.setStyle("-fx-background-color: transparent;"); // solution: https://community.oracle.com/thread/3570580
 
         FXMLPoolController controller = loader.getController();
         controller.setModel(tableModel);
@@ -28,7 +31,11 @@ public class Main extends Application {
         controller.navigate(Navigation.MAIN_MENU);
 
         primaryStage.setTitle("Pool game");
-        primaryStage.setScene(new Scene(root, 850, 1040)); // 550 740
+
+        //https://www.freepik.com/free-vector/wood-planks-texture-background-parquet-flooring_886477.htm#term=parquet&page=1&position=4
+        Image img = new Image(getClass().getResourceAsStream("/poolgame/img/background.jpg"));
+
+        primaryStage.setScene(new Scene(root, 692, 800, new ImagePattern(img)));
         primaryStage.show();
     }
 

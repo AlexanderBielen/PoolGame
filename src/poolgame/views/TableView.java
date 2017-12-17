@@ -19,6 +19,8 @@ public class TableView  extends Region implements View {
 
         Rectangle table = new Rectangle(0,0, Table.WIDTH, Table.HEIGHT);
         table.setFill(new Color(0, 0, 0, 1));
+        table.setArcWidth(5);
+        table.setArcHeight(5);
 
         Rectangle clothEdge = new Rectangle(10,10,Table.WIDTH-20,Table.HEIGHT-20);
         clothEdge.setFill(new Color(0, 0.1765, 0.4157, 1));

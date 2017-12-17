@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Table implements Model {
-    public static int HEIGHT = 700;
-    public static int WIDTH = 550;
+    public static int HEIGHT = 500;
+    public static int WIDTH = 392;
 
     private ArrayList<Ball> balls;
     private int xt;
@@ -30,7 +30,7 @@ public class Table implements Model {
         balls = new ArrayList<>();
         colorPool = new ArrayList<>();
         colorPool.addAll(Arrays.asList(colors));
-        balls.add(new Ball(xt, yt - 350, Color.WHITE, true));
+        balls.add(new Ball(xt, yt - 200, Color.WHITE, true));
 
         //dynamically generate rack
         for(int i = 0; i < rack.length; i ++) {
@@ -38,7 +38,6 @@ public class Table implements Model {
                 Color ballColor = Color.BLACK;
                 if(colorScheme[i][j] == 0) {
                     int r = (int)(Math.random() * colorPool.size());
-                    System.out.println(r);
                     ballColor = colorPool.get(r);
                     colorPool.remove(r);
                 }
@@ -49,10 +48,5 @@ public class Table implements Model {
 
     public ArrayList<Ball> getBalls() {
         return balls;
-    }
-
-    private int calculatePositionInRack() {
-
-        return 1;
     }
 }

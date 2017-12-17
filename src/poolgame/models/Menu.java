@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Menu implements Model {
+    public static int HEIGHT = Table.HEIGHT;
+    public static int WIDTH = Table.WIDTH;
+
     private ArrayList<MenuButton> menuButtonList;
     public Menu() {
         Initialize();
@@ -23,7 +26,21 @@ public class Menu implements Model {
         menuButtonList.add(exit);
     }
 
-    public ArrayList<MenuButton> getButtons() {
+    /**
+     * Gets menuButtonList
+     *
+     * @return value of menuButtonList
+     */
+    public ArrayList<MenuButton> getMenuButtonList() {
         return menuButtonList;
+    }
+
+    /**
+     * Sets menuButtonList
+     *
+     * @param menuButtonList the menuButtonList to set
+     */
+    public void setMenuButtonList(ArrayList<MenuButton> menuButtonList) {
+        this.menuButtonList = menuButtonList;
     }
 }

@@ -20,6 +20,13 @@ import poolgame.views.CueView;
 import poolgame.views.MenuView;
 import poolgame.views.TableView;
 
+//TODO adding pockets
+//TODO Settings page
+//TODO Fix collisions
+//TODO javadoc
+//TODO back button
+
+
 public class FXMLPoolController {
 
     private Navigation navigation;
@@ -140,28 +147,25 @@ public class FXMLPoolController {
             case IN_GAME:
                 for(Ball ball : tableModel.getBalls()) {
                     if(ball.isCueBall()) {
-                        double dy = ball.getCenterY()-event.getY();
-                        double dx = ball.getCenterX()-event.getX();
+                        double dy = ball.getY()-event.getY();
+                        double dx = ball.getX()-event.getX();
                         double alpha = Math.atan(dy/dx);
-                        if(ball.getCenterX() < event.getX()) {
+                        if(ball.getX() < event.getX()) {
                             alpha -= Math.PI;
                         }
                         cueModel.setPullBack(Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2)));
                         cueModel.setXY(event.getX(), event.getY());
                         cueModel.setAlpha(alpha);
-                        cueModel.setCueBallX(ball.getCenterX());
-                        cueModel.setCueBallY(ball.getCenterY());
+                        cueModel.setCueBallX(ball.getX());
+                        cueModel.setCueBallY(ball.getY());
                         cueView.update();
                     }
                 }
                 break;
             case MAIN_MENU:
-                for(MenuButton btn : menuModel.getButtons()) {
+                for(MenuButton btn : menuModel.getMenuButtonList()) {
                     btn.setActive(false);
-                    if(event.getX() > (btn.getBeginX() * MenuView.WIDTH) / 3
-                            && event.getX() < ((btn.getBeginX() * MenuView.WIDTH) / 3) + btn.getWidth()
-                            && event.getY() > ((btn.getBeginY() * MenuView.HEIGHT) / 10)
-                            && event.getY() < ((btn.getBeginY() * MenuView.HEIGHT) / 10) + btn.getHeight()) {
+                    if(mouseIsOver(event, btn)) {
                         btn.setActive(true);
                     }
                     updateViews();
@@ -181,14 +185,14 @@ public class FXMLPoolController {
                         for(Ball ball : tableModel.getBalls()) {
                             if(ball.isCueBall()) {
                                 ball.setVelocity((cueModel.getPullBack() - 155) / 10);
-                                double dy = ball.getCenterY()-(event.getY());
-                                double dx = ball.getCenterX()-(event.getX());
+                                double dy = ball.getY()-(event.getY());
+                                double dx = ball.getX()-(event.getX());
                                 double alpha = Math.atan(dy/dx);
-                                if(ball.getCenterX() < event.getX()) {
+                                if(ball.getX() < event.getX()) {
                                     alpha -= Math.PI;
                                 }
                                 ball.setAlpha(alpha);
-                                cueModel.isVisible(false);
+                                cueModel.setVisible(false);
                                 cueView.update();
                             }
                         }
@@ -208,7 +212,7 @@ public class FXMLPoolController {
 
                             }
                         }
-                        cueModel.isVisible(true);
+                        cueModel.setVisible(true);
                     }
                 };
                 Thread t = new Thread(timerTask);
@@ -216,12 +220,9 @@ public class FXMLPoolController {
                 t.start();
                 break;
             case MAIN_MENU:
-                for(MenuButton btn : menuModel.getButtons()) {
+                for(MenuButton btn : menuModel.getMenuButtonList()) {
                     btn.setActive(false);
-                    if(event.getX() > (btn.getBeginX() * MenuView.WIDTH) / 3
-                            && event.getX() < ((btn.getBeginX() * MenuView.WIDTH) / 3) + btn.getWidth()
-                            && event.getY() > ((btn.getBeginY() * MenuView.HEIGHT) / 10)
-                            && event.getY() < ((btn.getBeginY() * MenuView.HEIGHT) / 10) + btn.getHeight()) {
+                    if(mouseIsOver(event, btn)) {
                         navigate(btn.getClickLocation());
                     }
                     updateViews();
@@ -265,7 +266,7 @@ public class FXMLPoolController {
             collide(ball, closestBall);
         } else if(futureDistance <= ball.getRadius() * 2) {
             double travel = distance - (2 * ball.getRadius());
-            double travel2 = Math.sqrt(Math.pow(ball.getCenterX() + ball.getDx() - ball.getCenterX(), 2) + Math.pow(ball.getCenterY() + ball.getDy() - ball.getCenterY(), 2));
+            double travel2 = Math.sqrt(Math.pow(ball.getX() + ball.getDx() - ball.getX(), 2) + Math.pow(ball.getY() + ball.getDy() - ball.getY(), 2));
 
             double factor = travel / travel2;
             ball.setDx(ball.getDx() * factor);
@@ -277,12 +278,11 @@ public class FXMLPoolController {
     private void calculateWallCollisions(Ball ball) {
         double dx = ball.getDx();
         double dy = ball.getDy();
-        double x = ball.getCenterX();
-        double y = ball.getCenterY();
+        double x = ball.getX();
+        double y = ball.getY();
         double alpha = ball.getAlpha();
         double wall = 20 + ball.getRadius();
         if(Math.signum(dx) < 0 && (x+dx) < wall) {
-            // Making sure that the ball hits the edge
             if(x <= wall) {
                 ball.setAlpha(Math.PI - alpha);
                 ball.calculateTrajectory();
@@ -321,11 +321,11 @@ public class FXMLPoolController {
     }
 
     private double calculateDistance(Ball ball1, Ball ball2) {
-        return Math.sqrt(Math.pow(ball1.getCenterX() - ball2.getCenterX(), 2) + Math.pow(ball1.getCenterY() - ball2.getCenterY(), 2));
+        return Math.sqrt(Math.pow(ball1.getX() - ball2.getX(), 2) + Math.pow(ball1.getY() - ball2.getY(), 2));
     }
 
     private double calculateFutureDistance(Ball ball1, Ball ball2) {
-        return Math.sqrt(Math.pow(ball1.getCenterX() + ball1.getDx() - ball2.getCenterX(), 2) + Math.pow(ball1.getCenterY() + ball1.getDy() - ball2.getCenterY(), 2));
+        return Math.sqrt(Math.pow(ball1.getX() + ball1.getDx() - ball2.getX(), 2) + Math.pow(ball1.getY() + ball1.getDy() - ball2.getY(), 2));
     }
 
     private void collide(Ball ball1, Ball ball2) {
@@ -335,11 +335,11 @@ public class FXMLPoolController {
                 b.setAlpha(Math.PI - ball1.getAlpha());
             }
             if(b.equals(ball2)) {
-                double dy = ball2.getCenterY()-ball1.getCenterY();
-                double dx = ball2.getCenterX()-ball1.getCenterX();
+                double dy = ball2.getY()-ball1.getY();
+                double dx = ball2.getX()-ball1.getX();
                 double alpha = Math.atan(dy/dx);
 
-                if(ball2.getCenterX() < ball1.getCenterX()) {
+                if(ball2.getX() < ball1.getX()) {
                     alpha += Math.PI;
                 }
 
@@ -347,5 +347,12 @@ public class FXMLPoolController {
                 b.setAlpha(alpha);
             }
         }
+    }
+
+    private boolean mouseIsOver(MouseEvent event, MenuButton btn) {
+        return event.getX() > btn.getXPosition()
+                && event.getX() < btn.getXPosition() + btn.getWidth()
+                && event.getY() > btn.getYPosition()
+                && event.getY() < btn.getYPosition()  + btn.getHeight();
     }
 }

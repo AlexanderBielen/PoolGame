@@ -10,8 +10,6 @@ import javafx.scene.transform.Rotate;
 import poolgame.helpers.View;
 import poolgame.models.Cue;
 
-import java.util.TimerTask;
-
 public class CueView extends Group implements View {
     private Cue cue;
     private Rectangle cueView;
