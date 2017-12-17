@@ -4,7 +4,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -20,11 +23,12 @@ import poolgame.views.CueView;
 import poolgame.views.MenuView;
 import poolgame.views.TableView;
 
+import javax.print.attribute.standard.MediaSize;
+
 //TODO adding pockets
 //TODO Settings page
 //TODO Fix collisions
 //TODO javadoc
-//TODO back button
 
 
 public class FXMLPoolController {
@@ -48,7 +52,7 @@ public class FXMLPoolController {
     private URL location;
 
     @FXML
-    private Button newGame;
+    private Button backButton;
 
     @FXML
     private Label debug1;
@@ -63,6 +67,8 @@ public class FXMLPoolController {
     private Pane table;
 
     private void initialize() throws UnknownStateException {
+        backButton.setOnAction(this::reset);
+
         if(table.getOnMouseMoved() == null) {
             table.setOnMouseMoved(new EventHandler<MouseEvent>() {
                 @Override
@@ -112,6 +118,7 @@ public class FXMLPoolController {
                     table.getChildren().add(menuView);
                 }
                 menuView.update();
+                backButton.setVisible(false);
                 break;
             case IN_GAME:
                 if(tableView == null) {
@@ -123,11 +130,13 @@ public class FXMLPoolController {
                     table.getChildren().add(cueView);
                 }
                 tableView.update();
+                backButton.setVisible(true);
                 break;
             case SETTINGS:
+                backButton.setVisible(true);
                 break;
             case EXIT:
-                System.exit(0);
+                Platform.exit();
                 break;
             default:
                 throw new UnknownStateException("Unknown navigation state");
@@ -136,9 +145,30 @@ public class FXMLPoolController {
 
     public void navigate(Navigation navigation) throws UnknownStateException {
         if(this.navigation != navigation) {
-            table.getChildren().clear();
+            clearTable();
             this.navigation = navigation;
             initialize();
+        }
+    }
+
+    private void clearTable() {
+        tableModel = new Table();
+        cueModel = new Cue();
+        menuModel = new Menu();
+
+        tableView = null;
+        cueView = null;
+        menuView = null;
+
+        table.getChildren().clear();
+    }
+
+    public void reset(ActionEvent e){
+        try {
+            clearTable();
+            navigate(Navigation.MAIN_MENU);
+        } catch ( UnknownStateException ex) {
+
         }
     }
 

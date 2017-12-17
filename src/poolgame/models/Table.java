@@ -32,6 +32,8 @@ public class Table implements Model {
         colorPool.addAll(Arrays.asList(colors));
         balls.add(new Ball(xt, yt - 200, Color.WHITE, true));
 
+        int ballRadius = balls.get(0).getRadius();
+
         //dynamically generate rack
         for(int i = 0; i < rack.length; i ++) {
             for(int j = 0; j < rack[i]; j ++) {
@@ -41,7 +43,7 @@ public class Table implements Model {
                     ballColor = colorPool.get(r);
                     colorPool.remove(r);
                 }
-                balls.add(new Ball(xt + 10 - (i*10) + (j * 20), yt + (i * 18), ballColor));
+                balls.add(new Ball(xt + ballRadius - (i*ballRadius) + (j * ballRadius * 2), yt + (i * ballRadius * 2 - 2), ballColor));
             }
         }
     }

@@ -13,6 +13,7 @@ import poolgame.models.Menu;
 import poolgame.models.Table;
 
 public class Main extends Application {
+    Navigation navigation = Navigation.MAIN_MENU;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -23,6 +24,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPoolController.fxml"));
         Parent root = loader.load();
         root.setStyle("-fx-background-color: transparent;"); // solution: https://community.oracle.com/thread/3570580
+
 
         FXMLPoolController controller = loader.getController();
         controller.setModel(tableModel);
