@@ -1,22 +1,14 @@
 package poolgame;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
 import poolgame.helpers.Navigation;
 import poolgame.helpers.UnknownStateException;
 import poolgame.models.*;
@@ -24,9 +16,6 @@ import poolgame.views.CueView;
 import poolgame.views.MenuView;
 import poolgame.views.TableView;
 
-import javax.print.attribute.standard.MediaSize;
-
-//TODO Fix what happens after ball is pocketed
 //TODO Settings page
 //TODO Fix collisions
 //TODO clean code
@@ -46,6 +35,8 @@ public class FXMLPoolController {
     private TableView tableView;
     private CueView cueView;
 
+    private boolean gameEnded;
+
     @FXML
     private Button backButton;
 
@@ -60,33 +51,28 @@ public class FXMLPoolController {
      */
     private void initialize() throws UnknownStateException {
         backButton.setOnAction(this::reset);
+        gameEnded = false;
 
         if(table.getOnMouseMoved() == null) {
-            table.setOnMouseMoved(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    try {
-                        if(!ballsMoving()) {
-                            mouseMoveHandler(event);
-                        }
-                    } catch (UnknownStateException ex) {
-
+            table.setOnMouseMoved(event -> {
+                try {
+                    if(!ballsMoving()) {
+                        mouseMoveHandler(event);
                     }
+                } catch (UnknownStateException ex) {
+
                 }
             });
         }
 
         if(table.getOnMouseClicked() == null) {
-            table.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    try {
-                        if(!ballsMoving()) {
-                            mouseClickHandler(event);
-                        }
-                    } catch (UnknownStateException ex) {
-
+            table.setOnMouseClicked(event -> {
+                try {
+                    if(!ballsMoving()) {
+                        mouseClickHandler(event);
                     }
+                } catch (UnknownStateException ex) {
+
                 }
             });
         }
@@ -182,6 +168,8 @@ public class FXMLPoolController {
         cueView = null;
         menuView = null;
 
+        gameEnded = false;
+
         table.getChildren().clear();
     }
 
@@ -264,9 +252,9 @@ public class FXMLPoolController {
                                 cueView.update();
                             }
                         }
-                        while(ballsMoving()) {
+                        while(ballsMoving() && !gameEnded) {
                             for(Ball ball : tableModel.getBalls()) {
-                                if(ball.getVelocity() != 0) {
+                                if(ball.getVelocity() != 0 && !ball.isPocketed()) {
                                     ball.calculateTrajectory();
                                     calculateBallCollisions(ball);
                                     calculateWallCollisions(ball);
@@ -274,6 +262,10 @@ public class FXMLPoolController {
                                 }
                             }
                             tableView.update();
+                            if(getAmountOfBallsLeft() == 0) {
+                                Platform.runLater(FXMLPoolController.this::showGameWonMessage);
+                                gameEnded = true;
+                            }
                             try {
                                 Thread.sleep(10);
                             } catch (InterruptedException ex) {
@@ -339,7 +331,6 @@ public class FXMLPoolController {
 
         double futureDistance = calculateFutureDistance(ball, closestBall);
         double distance = calculateDistance(ball, closestBall);
-        System.out.println("current distance " + distance + " future distance " + futureDistance);
         if(distance <= (ball.getRadius() * 2 + (ball.getRadius() * 0.05))) {
             collide(ball, closestBall);
         } else if(futureDistance <= ball.getRadius() * 2) {
@@ -349,7 +340,6 @@ public class FXMLPoolController {
             double factor = travel / travel2;
             ball.setDx(ball.getDx() * factor);
             ball.setDy(ball.getDy() * factor);
-            System.out.println("new future distance " + calculateFutureDistance(ball, closestBall));
         }
     }
 
@@ -449,7 +439,7 @@ public class FXMLPoolController {
                 double alpha = Math.atan(dy/dx);
 
                 if(ball2.getX() < ball1.getX()) {
-                    alpha += Math.PI;
+                    alpha -= Math.PI;
                 }
 
                 b.setVelocity(ball1.getVelocity()*0.9);
@@ -466,18 +456,36 @@ public class FXMLPoolController {
      * @return true if the ball is in a pocket
      */
     private boolean checkPocket(Ball ball) {
-        for(Pocket p: tableModel.getPockets()) {
-            if(p.isInPocket(ball)) {
-                if(ball.isCueBall()) {
-//                    showGameLostMessage();
+        for(Pocket p: tableModel.getPockets())
+            if (p.isInPocket(ball)) {
+                if (ball.isCueBall()) {
+                    Platform.runLater(this::showGameLostMessage);
+                    gameEnded = true;
                 } else {
+                    ball.setVelocity(0);
+                    ball.setDx(0);
+                    ball.setDy(0);
+                    ball.setX(-100 + ball.getRadius() * tableModel.getPocketedBalls() * 2.5);
+                    ball.setY(-100);
                     ball.setPocketed(true);
-                    tableModel.setPocketedBalls(tableModel.getPocketedBalls()+1);
+                    tableModel.setPocketedBalls(tableModel.getPocketedBalls() + 1);
                 }
                 return true;
             }
-        }
         return false;
+    }
+
+    /**
+     * Returns the amount of balls left on the table
+     *
+     * @return amount of balls left en the table
+     */
+    private int getAmountOfBallsLeft() {
+        int amount = 0;
+        for(Ball ball : tableModel.getBalls()) {
+            if(!ball.isPocketed() && !ball.isCueBall()) { amount++; }
+        }
+        return amount;
     }
 
     /**

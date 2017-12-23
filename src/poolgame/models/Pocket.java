@@ -24,10 +24,7 @@ public class Pocket implements Model {
 
     public boolean isInPocket(Ball ball) {
         double distance = Math.sqrt(Math.pow(ball.getX() - x, 2) + Math.pow(ball.getY() - y, 2));
-        if(distance <= ball.getRadius() + radius) {
-            return true;
-        }
-        return false;
+        return distance <= ball.getRadius() + radius;
     }
 
     /**

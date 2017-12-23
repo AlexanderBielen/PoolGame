@@ -26,17 +26,12 @@ public class BallView extends Group implements View {
     }
 
     /**
-     * updates the ball position and moves it aside when it is pocketed
+     * updates the ball position
      */
     @Override
     public void update() {
-        if(ball.isPocketed()) {
-            ballView.setTranslateX(-100);
-            ballView.setTranslateY(-100);
-        } else if(!ball.isPocketed()) {
-            ballView.setTranslateX((ball.getX()));
-            ballView.setTranslateY((ball.getY()));
-        }
+        ballView.setTranslateX((ball.getX()));
+        ballView.setTranslateY((ball.getY()));
     }
 
 }
