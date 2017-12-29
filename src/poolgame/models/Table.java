@@ -57,7 +57,7 @@ public class Table implements Model {
                     ballColor = colorPool.get(r);
                     colorPool.remove(r);
                 }
-                balls.add(new Ball(xt + ballRadius - (i*ballRadius) + (j * ballRadius * 2), yt + (i * ballRadius * 2 - 2), ballColor));
+                balls.add(new Ball(xt - (i*ballRadius) + (j * ballRadius * 2), yt + (i * ballRadius * 2 - 2), ballColor));
             }
         }
 

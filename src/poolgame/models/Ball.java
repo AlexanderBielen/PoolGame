@@ -256,10 +256,19 @@ public class Ball implements Model {
      * @param pocketed the pocketed to set
      */
     public void setPocketed(boolean pocketed) {
+        isPocketed = pocketed;
+    }
+
+    /**
+     * Pockets the ball
+     */
+    public void pocket(int pocketIndex) {
         velocity = 0;
         dx = 0;
         dy = 0;
-        isPocketed = pocketed;
+        x = -100 + radius * pocketIndex * 2.5;
+        y = -100;
+        isPocketed = true;
     }
 }
 

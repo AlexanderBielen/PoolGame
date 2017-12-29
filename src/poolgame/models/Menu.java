@@ -23,11 +23,9 @@ public class Menu implements Model {
     private void Initialize() {
         menuButtonList = new ArrayList<>();
         MenuButton beginGame = new MenuButton(50, 250, 1, 1, "Start game", Navigation.IN_GAME);
-        MenuButton settings = new MenuButton(50, 250, 1, 2, "Settings", Navigation.SETTINGS);
-        MenuButton exit = new MenuButton(50, 250, 1, 3, "Exit game", Navigation.EXIT);
+        MenuButton exit = new MenuButton(50, 250, 1, 2, "Exit game", Navigation.EXIT);
 
         menuButtonList.add(beginGame);
-        menuButtonList.add(settings);
         menuButtonList.add(exit);
     }
 
