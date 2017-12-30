@@ -54,6 +54,8 @@ public class Physics {
         double distance = calculateDistance(ball, closestBall);
         double t = simulateSmallMovement(ball, closestBall, 0.01);
         if(distance <= (ball.getRadius() * 2 + (ball.getRadius() * 0.05)) && t < distance) {
+            AudioPlayer.playBallsColliding();
+
             ball.setVelocity(ball.getVelocity()*0.8);
             ball.setAlpha(Math.PI - ball.getAlpha());
 
@@ -131,6 +133,7 @@ public class Physics {
             if(x <= wall) {
                 ball.setAlpha(Math.PI - alpha);
                 ball.calculateTrajectory();
+                AudioPlayer.playBallHittingWall();
             } else {
                 ball.setDx(wall-x);
                 ball.setDy(dy*(ball.getDx()/dx));
@@ -139,6 +142,7 @@ public class Physics {
             if(x >= Table.WIDTH-wall) {
                 ball.setAlpha(Math.PI - alpha);
                 ball.calculateTrajectory();
+                AudioPlayer.playBallHittingWall();
             } else {
                 ball.setDx(Table.WIDTH-wall - x);
                 ball.setDy(dy*(ball.getDx()/dx));
@@ -149,6 +153,7 @@ public class Physics {
             if(y <= wall) {
                 ball.setAlpha(Math.PI + (Math.PI - alpha));
                 ball.calculateTrajectory();
+                AudioPlayer.playBallHittingWall();
             } else {
                 ball.setDy(wall-y);
                 ball.setDx(dx*(ball.getDy()/dy));
@@ -158,6 +163,7 @@ public class Physics {
             if(y >= Table.HEIGHT-wall) {
                 ball.setAlpha(Math.PI + (Math.PI - alpha));
                 ball.calculateTrajectory();
+                AudioPlayer.playBallHittingWall();
             } else {
                 ball.setDy(Table.HEIGHT-wall - y);
                 ball.setDx(dx*(ball.getDy()/dy));

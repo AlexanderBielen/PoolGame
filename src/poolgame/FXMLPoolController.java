@@ -1,5 +1,6 @@
 package poolgame;
 
+import java.io.File;
 import java.util.TimerTask;
 
 import javafx.application.Platform;
@@ -9,6 +10,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import poolgame.helpers.AudioPlayer;
 import poolgame.helpers.Navigation;
 import poolgame.helpers.Physics;
 import poolgame.models.*;
@@ -215,6 +220,9 @@ public class FXMLPoolController {
                                     alpha -= Math.PI;
                                 }
                                 ball.setAlpha(alpha);
+
+                                AudioPlayer.playCueHittingBall();
+
                                 cueModel.setVisible(false);
                                 cueView.update();
                             }
@@ -226,6 +234,7 @@ public class FXMLPoolController {
                                     Physics.calculateBallCollisions(tableModel.getBalls(), ball);
 
                                     if(ballHitPocket(ball)) {
+                                        AudioPlayer.playBallPotted();
                                         if (ball.isCueBall()) {
                                             Platform.runLater(FXMLPoolController.this::showGameLostMessage);
                                             gameEnded = true;
