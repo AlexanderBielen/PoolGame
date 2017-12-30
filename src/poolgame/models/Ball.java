@@ -69,7 +69,7 @@ public class Ball implements Model {
      */
     public void tick() {
         if(isPocketed) return;
-        double dV = 0.2 * 9.81 * (velocity/velocity+0.2)*0.01;
+        double dV = 0.2 * 9.81 * (velocity/velocity+0.3)*0.01;
         velocity -= dV;
         x += dx;
         y += dy;

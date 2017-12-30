@@ -16,9 +16,6 @@ import poolgame.views.CueView;
 import poolgame.views.MenuView;
 import poolgame.views.TableView;
 
-//TODO Fix collisions
-
-
 public class FXMLPoolController {
     // Properties
     private Navigation navigation;
@@ -230,7 +227,6 @@ public class FXMLPoolController {
 
                                     if(ballHitPocket(ball)) {
                                         if (ball.isCueBall()) {
-                                            updateViews();
                                             Platform.runLater(FXMLPoolController.this::showGameLostMessage);
                                             gameEnded = true;
                                         } else {

@@ -45,9 +45,15 @@ public class Physics {
             }
         }
 
+        if(closestBall == null) return;
+
+        ball.calculateTrajectory();
+        closestBall.calculateTrajectory();
+
         double futureDistance = calculateFutureDistance(ball, closestBall);
         double distance = calculateDistance(ball, closestBall);
-        if(distance <= (ball.getRadius() * 2 + (ball.getRadius() * 0.05))) {
+        double t = simulateSmallMovement(ball, closestBall, 0.01);
+        if(distance <= (ball.getRadius() * 2 + (ball.getRadius() * 0.05)) && t < distance) {
             ball.setVelocity(ball.getVelocity()*0.8);
             ball.setAlpha(Math.PI - ball.getAlpha());
 
@@ -61,7 +67,7 @@ public class Physics {
 
             closestBall.setVelocity(ball.getVelocity()*1.1);
             closestBall.setAlpha(alpha);
-        } else if(futureDistance <= ball.getRadius() * 2) {
+        } else if(futureDistance <= ball.getRadius() * 2 && distance > t) {
             double travel = distance - (2 * ball.getRadius());
             double travel2 = Math.sqrt(Math.pow(ball.getX() + ball.getDx() - ball.getX(), 2) + Math.pow(ball.getY() + ball.getDy() - ball.getY(), 2));
 
@@ -93,6 +99,19 @@ public class Physics {
      */
     private static double calculateFutureDistance(Ball ball1, Ball ball2) {
         return Math.sqrt(Math.pow(ball1.getX() + ball1.getDx() - ball2.getX(), 2) + Math.pow(ball1.getY() + ball1.getDy() - ball2.getY(), 2));
+    }
+
+    /**
+     * Simulates a small movement of ball 1 to ball 2 to test if ball 1 is moving towards ball 2
+     *
+     * @param ball1 ball that is moving
+     * @param ball2 ball that is not moving
+     * @param percentage of real move to simulate
+     * @return distance between ball1 and 2 after simulation
+     */
+    private static double simulateSmallMovement(Ball ball1, Ball ball2, double percentage) {
+        return  Math.sqrt(Math.pow(ball1.getX() + (ball1.getDx() * percentage) - (ball2.getX() + (ball2.getDx() * percentage)), 2)
+                + Math.pow(ball1.getY() + (ball1.getDy()* percentage) - (ball2.getY() + (ball2.getDy() * percentage)), 2));
     }
 
     /**
