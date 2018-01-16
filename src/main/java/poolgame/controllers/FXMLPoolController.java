@@ -1,6 +1,5 @@
-package poolgame;
+package poolgame.controllers;
 
-import java.io.File;
 import java.util.TimerTask;
 
 import javafx.application.Platform;
@@ -10,9 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import poolgame.helpers.AudioPlayer;
 import poolgame.helpers.Navigation;
 import poolgame.helpers.Physics;

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
+import poolgame.controllers.FXMLPoolController;
 import poolgame.helpers.Navigation;
 import poolgame.models.Cue;
 import poolgame.models.Menu;
