@@ -1,5 +1,6 @@
 package poolgame.views;
 
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import poolgame.helpers.View;
@@ -7,7 +8,6 @@ import poolgame.models.Ball;
 import poolgame.models.Pocket;
 import poolgame.models.Table;
 
-import javafx.scene.layout.Region;
 import java.util.ArrayList;
 
 public class TableView  extends Region implements View {

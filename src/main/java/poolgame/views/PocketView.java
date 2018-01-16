@@ -3,7 +3,6 @@ package poolgame.views;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import poolgame.helpers.View;
 import poolgame.models.Pocket;
 

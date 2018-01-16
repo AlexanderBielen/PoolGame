@@ -4,7 +4,6 @@ import poolgame.helpers.Model;
 import poolgame.helpers.Navigation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Menu implements Model {
     // Properties

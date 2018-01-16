@@ -1,7 +1,5 @@
 package poolgame.controllers;
 
-import java.util.TimerTask;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +14,8 @@ import poolgame.models.*;
 import poolgame.views.CueView;
 import poolgame.views.MenuView;
 import poolgame.views.TableView;
+
+import java.util.TimerTask;
 
 public class FXMLPoolController {
     // Properties

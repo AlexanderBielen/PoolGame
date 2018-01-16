@@ -6,7 +6,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import poolgame.helpers.View;
-import poolgame.models.Menu;
 import poolgame.models.MenuButton;
 
 public class ButtonView extends Group implements View {

@@ -22,8 +22,7 @@ public class Main extends Application {
         Table tableModel = new Table();
         Cue cue = new Cue();
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/FXMLPoolController.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FXMLPoolController.fxml"));
         Parent root = loader.load();
         root.setStyle("-fx-background-color: transparent;"); // solution: https://community.oracle.com/thread/3570580
 
