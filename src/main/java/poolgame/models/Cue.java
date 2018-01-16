@@ -17,7 +17,7 @@ public class Cue implements Model  {
     private boolean isVisible;
 
     //Source of the cue image: https://pngtree.com/freepng/hand-painted-cue_909840.html
-    private String imageLocation = "/poolgame/img/cue.png";
+    private String imageLocation = "/images/cue.png";
 
     private double pullBack = 5;
 

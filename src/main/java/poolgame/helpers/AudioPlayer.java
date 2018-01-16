@@ -7,13 +7,13 @@ import javafx.scene.media.AudioClip;
  */
 public class AudioPlayer {
 
-    private static String ballHittingWallLocation = "/poolgame/soundfx/hitting_wall.wav";
+    private static String ballHittingWallLocation = "/soundfx/hitting_wall.wav";
 
-    private static String ballsCollidingLocation = "/poolgame/soundfx/balls_colliding.wav";
+    private static String ballsCollidingLocation = "/soundfx/balls_colliding.wav";
 
-    private static String ballBeingPottedLocation = "/poolgame/soundfx/potting_ball.wav";
+    private static String ballBeingPottedLocation = "/soundfx/potting_ball.wav";
 
-    private static String cueHittingBallLocation = "/poolgame/soundfx/cue_hitting.wav";
+    private static String cueHittingBallLocation = "/soundfx/cue_hitting.wav";
 
     /**
      * Plays a sound a pool ball hitting a wall

@@ -21,7 +21,8 @@ public class Main extends Application {
         Table tableModel = new Table();
         Cue cue = new Cue();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLPoolController.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/FXMLPoolController.fxml"));
         Parent root = loader.load();
         root.setStyle("-fx-background-color: transparent;"); // solution: https://community.oracle.com/thread/3570580
 
@@ -32,10 +33,10 @@ public class Main extends Application {
         controller.setCue(cue);
         controller.navigate(Navigation.MAIN_MENU);
 
-        primaryStage.setTitle("Pool game");
+        primaryStage.setTitle("Java Pool Game");
 
         //Source of the background image: https://www.freepik.com/free-vector/wood-planks-texture-background-parquet-flooring_886477.htm#term=parquet&page=1&position=4
-        Image img = new Image(getClass().getResourceAsStream("/poolgame/img/background.jpg"));
+        Image img = new Image(getClass().getResourceAsStream("/images/background.jpg"));
 
         primaryStage.setScene(new Scene(root, 692, 800, new ImagePattern(img)));
         primaryStage.show();
