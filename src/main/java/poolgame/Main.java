@@ -16,6 +16,10 @@ import poolgame.models.Table;
 public class Main extends Application {
     Navigation navigation = Navigation.MAIN_MENU;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Menu mainMenu = new Menu();
@@ -40,10 +44,5 @@ public class Main extends Application {
 
         primaryStage.setScene(new Scene(root, 692, 800, new ImagePattern(img)));
         primaryStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
